@@ -1,0 +1,32 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./apps/web"
+    },
+    {
+      "path": "./apps/api-gateway"
+    },
+    {
+      "path": "./apps/auth-service"
+    },
+    {
+      "path": "./apps/tasks-service"
+    },
+    {
+      "path": "./apps/notifications-service"
+    },
+    {
+      "path": "./packages/types"
+    },
+    {
+      "path": "./packages/eslint-config"
+    },
+    {
+      "path": "./packages/tsconfig"
+    },
+    {
+      "path": "./packages/utils"
+    }
+  ]
+}
