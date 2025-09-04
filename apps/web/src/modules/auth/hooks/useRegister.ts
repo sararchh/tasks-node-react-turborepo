@@ -8,7 +8,6 @@ export function useRegister() {
     onSuccess: (data) => {
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
-      // Redirect or update context
     },
   });
 

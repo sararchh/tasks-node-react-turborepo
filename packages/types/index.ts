@@ -5,7 +5,7 @@ export interface User {
 }
 
 export interface LoginRequest {
-  email: string;
+  usernameOrEmail: string;
   password: string;
 }
 

@@ -1,8 +1,11 @@
-module.exports = {
-  extends: ['@typescript-eslint/recommended'],
-  parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
-  rules: {
-    // Add custom rules
-  },
-};
+// @ts-check
+import tseslint from 'typescript-eslint'
+
+export default tseslint.config(
+  ...tseslint.configs.recommended,
+  {
+    rules: {
+      // Add custom rules
+    },
+  }
+);

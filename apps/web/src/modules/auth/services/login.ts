@@ -1,4 +1,4 @@
-import { ApiService, ApiResponse } from '@/shared/core';
+import { ApiService } from '@/shared/core';
 import { api } from '@/shared/infra';
 import { LoginRequest, AuthResponse } from '@igame/types';
 
@@ -6,7 +6,7 @@ export type LoginServiceRequest = LoginRequest;
 
 export type LoginServiceResponse = AuthResponse;
 
-type LoginApiResponse = ApiResponse<AuthResponse>;
+type LoginApiResponse = AuthResponse;
 
 export const loginService = new ApiService<
   LoginServiceRequest,
@@ -15,6 +15,6 @@ export const loginService = new ApiService<
   cacheKey: 'login',
   handler: async (req: LoginServiceRequest) => {
     const { data } = await api.post<LoginApiResponse>('/auth/login', req);
-    return data.data;
+    return data;
   },
 });
