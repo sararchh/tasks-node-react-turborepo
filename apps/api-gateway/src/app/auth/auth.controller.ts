@@ -15,66 +15,13 @@ import {
   ApiOperation,
   ApiResponse,
   ApiBearerAuth,
-  ApiProperty,
 } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { firstValueFrom } from 'rxjs';
-import { IsEmail, IsString, MinLength, MaxLength } from 'class-validator';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
-
-class RegisterDto {
-  @ApiProperty({
-    description: 'User email address',
-    example: 'sara@mail.com',
-  })
-  @IsEmail()
-  email: string;
-
-  @ApiProperty({
-    description: 'Username',
-    example: 'sara',
-    minLength: 3,
-    maxLength: 20,
-  })
-  @IsString()
-  @MinLength(3)
-  @MaxLength(20)
-  username: string;
-
-  @ApiProperty({
-    description: 'User password',
-    example: '123456',
-    minLength: 6,
-  })
-  @IsString()
-  @MinLength(6)
-  password: string;
-}
-
-class LoginDto {
-  @ApiProperty({
-    description: 'Username or email address',
-    example: 'sara@mail.com',
-  })
-  @IsString()
-  usernameOrEmail: string;
-
-  @ApiProperty({
-    description: 'User password',
-    example: '123456',
-  })
-  @IsString()
-  password: string;
-}
-
-class RefreshTokenDto {
-  @ApiProperty({
-    description: 'Refresh token',
-    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-  })
-  @IsString()
-  refreshToken: string;
-}
+import { RegisterDto } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')

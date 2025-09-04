@@ -24,64 +24,62 @@ export class AppService {
   ) {}
 
   async register(registerDto: RegisterDto): Promise<AuthResponseDto> {
-    const { email, username, password } = registerDto;
+    try {
+      const { email, username, password } = registerDto;
 
-    // Check if user already exists
-    const existingUser = await this.userRepository.findOne({
-      where: [{ email }, { username }],
-    });
+      const existingUser = await this.userRepository.findOne({
+        where: [{ email }, { username }],
+      });
 
-    if (existingUser) {
-      throw new ConflictException(
-        'User with this email or username already exists',
-      );
+      if (existingUser) {
+        throw new ConflictException(
+          'User with this email or username already exists',
+        );
+      }
+      const hashedPassword = await bcrypt.hash(password, 12);
+      const user = this.userRepository.create({
+        email,
+        username,
+        password: hashedPassword,
+      });
+
+      const savedUser = await this.userRepository.save(user);
+
+      return this.generateTokens(savedUser);
+    } catch (error) {
+      throw new ConflictException('User registration failed', error);
     }
-
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    // Create user
-    const user = this.userRepository.create({
-      email,
-      username,
-      password: hashedPassword,
-    });
-
-    const savedUser = await this.userRepository.save(user);
-
-    // Generate tokens
-    return this.generateTokens(savedUser);
   }
 
   async login(loginDto: LoginDto): Promise<AuthResponseDto> {
-    const { usernameOrEmail, password } = loginDto;
+    try {
+      const { usernameOrEmail, password } = loginDto;
 
-    // Find user by username or email
-    const user = await this.userRepository.findOne({
-      where: [{ email: usernameOrEmail }, { username: usernameOrEmail }],
-    });
+      const user = await this.userRepository.findOne({
+        where: [{ email: usernameOrEmail }, { username: usernameOrEmail }],
+      });
 
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+      if (!user) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+
+      return this.generateTokens(user);
+    } catch (error) {
+      throw new UnauthorizedException('Login failed', error);
     }
-
-    // Verify password
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-
-    return this.generateTokens(user);
   }
 
   async refreshToken(refreshToken: string): Promise<AuthResponseDto> {
     try {
-      // Verify refresh token
       const payload = this.jwtService.verify(refreshToken, {
         secret: process.env.JWT_REFRESH_SECRET || 'refresh-secret',
       });
 
-      // Check if refresh token exists in database
       const storedToken = await this.refreshTokenRepository.findOne({
         where: { token: refreshToken, userId: payload.sub },
         relations: ['user'],
@@ -94,12 +92,9 @@ export class AppService {
       ) {
         throw new UnauthorizedException('Invalid refresh token');
       }
-
-      // Revoke old refresh token
       storedToken.isRevoked = true;
       await this.refreshTokenRepository.save(storedToken);
 
-      // Generate new tokens
       return this.generateTokens(storedToken.user);
     } catch (error) {
       throw new UnauthorizedException('Invalid refresh token');
