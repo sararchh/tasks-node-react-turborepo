@@ -30,7 +30,7 @@ export function RegisterView() {
   const onSubmit = async (data: RegisterForm) => {
     try {
       await registerUser(data);
-      navigate(PAGE_PATH_DASHBOARD);
+      return navigate(PAGE_PATH_DASHBOARD);
     } catch {
       setError('Registration failed');
     }

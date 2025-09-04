@@ -108,19 +108,16 @@ export class AppService {
       email: user.email,
     };
 
-    // Generate access token (15 minutes)
     const accessToken = this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET || 'secret',
       expiresIn: '15m',
     });
 
-    // Generate refresh token (7 days)
     const refreshToken = this.jwtService.sign(payload, {
       secret: process.env.JWT_REFRESH_SECRET || 'refresh-secret',
       expiresIn: '7d',
     });
 
-    // Store refresh token in database
     const refreshTokenEntity = this.refreshTokenRepository.create({
       token: refreshToken,
       userId: user.id,
