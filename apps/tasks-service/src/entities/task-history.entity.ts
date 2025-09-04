@@ -39,10 +39,10 @@ export class TaskHistory {
   newValues: Record<string, any>;
 
   @Column({ name: 'changed_by' })
-  changedBy: string; // User ID
+  changedBy: string;
 
   @Column({ name: 'changed_by_name' })
-  changedByName: string; // User name for display
+  changedByName: string;
 
   @Column({ name: 'task_id' })
   taskId: string;

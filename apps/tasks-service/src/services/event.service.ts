@@ -25,7 +25,7 @@ export class EventService {
     this.client = ClientProxyFactory.create({
       transport: Transport.RMQ,
       options: {
-        urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'],
+        urls: ['amqp://admin:admin@localhost:5672'],
         queue: 'task_events',
         queueOptions: {
           durable: true,
@@ -35,7 +35,11 @@ export class EventService {
   }
 
   publishTaskEvent(event: TaskEvent) {
-    return this.client.emit('task.event', event);
+    try {
+      return this.client.emit(event.eventType, event);
+    } catch (error) {
+      console.error('❌ Erro ao publicar evento:', error);
+    }
   }
 
   async onModuleDestroy() {

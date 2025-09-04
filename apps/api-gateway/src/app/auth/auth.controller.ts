@@ -25,7 +25,7 @@ import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
-@Throttle({ default: { limit: 10, ttl: 1000 } }) // 10 requests per second
+@Throttle({ default: { limit: 10, ttl: 1000 } })
 export class AuthController {
   constructor(
     @Inject('AUTH_SERVICE') private readonly authClient: ClientProxy,

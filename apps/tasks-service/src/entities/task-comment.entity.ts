@@ -17,10 +17,10 @@ export class TaskComment {
   content: string;
 
   @Column({ name: 'author_id' })
-  authorId: string; // User ID
+  authorId: string;
 
   @Column({ name: 'author_name' })
-  authorName: string; // User name for display
+  authorName: string;
 
   @Column({ name: 'task_id' })
   taskId: string;

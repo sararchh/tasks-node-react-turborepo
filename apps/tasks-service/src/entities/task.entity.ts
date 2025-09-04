@@ -55,7 +55,7 @@ export class Task {
   status: TaskStatus;
 
   @Column({ name: 'created_by' })
-  createdBy: string; // User ID
+  createdBy: string;
 
   @OneToMany(() => TaskComment, (comment) => comment.task, { cascade: true })
   comments: TaskComment[];

@@ -28,6 +28,7 @@ export class TasksService {
     private historyRepository: Repository<TaskHistory>,
     @InjectRepository(TaskAssignment)
     private assignmentRepository: Repository<TaskAssignment>,
+    private readonly eventService: EventService,
   ) {}
 
   async create(
@@ -67,6 +68,21 @@ export class TasksService {
         userId,
       );
     }
+
+    this.eventService.publishTaskEvent({
+      eventType: 'task.created',
+      taskId: savedTask.id,
+      userId,
+      data: {
+        title: savedTask.title,
+        description: savedTask.description,
+        priority: savedTask.priority,
+        status: savedTask.status,
+        deadline: savedTask.deadline,
+        assignedUserIds: createTaskDto.assignedUserIds || [],
+      },
+      timestamp: new Date(),
+    });
 
     return this.findOne(savedTask.id);
   }
@@ -218,6 +234,18 @@ export class TasksService {
         userId,
       );
     }
+
+    this.eventService.publishTaskEvent({
+      eventType: 'task.updated',
+      taskId: id,
+      userId,
+      data: {
+        updatedFields,
+        previousValues,
+        updatedAt: new Date(),
+      },
+      timestamp: new Date(),
+    });
 
     return this.findOne(id);
   }

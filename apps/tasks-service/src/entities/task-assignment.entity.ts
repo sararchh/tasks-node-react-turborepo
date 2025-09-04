@@ -22,10 +22,10 @@ export class TaskAssignment {
   userId: string;
 
   @Column({ name: 'user_name' })
-  userName: string; // For display purposes
+  userName: string;
 
   @Column({ name: 'assigned_by' })
-  assignedBy: string; // User ID who made the assignment
+  assignedBy: string;
 
   @ManyToOne(() => Task, (task) => task.assignments, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'task_id' })
