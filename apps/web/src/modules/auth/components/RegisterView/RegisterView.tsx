@@ -51,11 +51,9 @@ export function RegisterView() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center p-12 sm:px-6 lg:px-8 items-center">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="flex justify-center">
-          <div className="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center transform rotate-45">
-            <FiUserPlus className="text-white text-2xl transform -rotate-45" />
-          </div>
+      <div className="flex justify-center mb-4">
+        <div className="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center transform rotate-45">
+          <FiUserPlus className="text-white text-2xl transform -rotate-45" />
         </div>
       </div>
 
@@ -122,9 +120,7 @@ export function RegisterView() {
           </Button>
         </form>
         <div className="!mt-2 text-center flex items-center justify-center">
-          <span className="text-sm text-gray-600 !mr-2">
-            Já tem uma conta?
-          </span>
+          <span className="text-sm text-gray-600 !mr-2">Já tem uma conta?</span>
           <Button
             type="button"
             variant="secondary"
