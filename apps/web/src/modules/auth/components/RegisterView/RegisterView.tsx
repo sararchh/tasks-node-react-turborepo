@@ -42,8 +42,7 @@ export function RegisterView() {
       await registerUser(data);
       toast.success("Cadastro realizado com sucesso! Bem-vindo!");
       void navigate(PAGE_PATH_DASHBOARD);
-    } catch(error) {
-      console.log("🚀 ~ onSubmit ~ error:", error)
+    } catch {
       toast.error("Falha no cadastro. Tente novamente.");
     } finally {
       setLoading(false);

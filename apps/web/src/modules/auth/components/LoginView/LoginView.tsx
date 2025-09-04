@@ -107,7 +107,8 @@ export function LoginView() {
             )}
           </Button>
         </form>
-        <div className="!mt-2 text-center flex items-center">
+
+        <div className="!mt-2 text-center flex items-center justify-center">
           <span className="text-sm text-gray-600 !mr-2">
             Ainda não tem uma conta?
           </span>
