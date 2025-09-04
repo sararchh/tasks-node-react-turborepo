@@ -1,8 +1,22 @@
 import { NestFactory } from '@nestjs/core';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT || 3002);
+  const port = Number(process.env.PORT) || 3002;
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.TCP,
+      options: {
+        host: '127.0.0.1',
+        port: port,
+      },
+    },
+  );
+
+  await app.listen();
+
+  console.log(`🚀 auth-service TCP is running on: 127.0.0.1:${port}`);
 }
 bootstrap();

@@ -26,17 +26,4 @@ RUN yarn build
 
 EXPOSE 3001
 
-CMD ["yarn", "start:prod"]lpine
-
-WORKDIR /app
-
-COPY package*.json ./
-RUN yarn install --production
-
-COPY . .
-
-RUN yarn build
-
-EXPOSE 3000
-
 CMD ["yarn", "start:prod"]
