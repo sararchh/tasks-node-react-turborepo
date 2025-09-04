@@ -5,6 +5,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+yarn.lock
 
 # Runtime data
 pids
@@ -124,3 +125,5 @@ Desktop.ini
 
 # Node modules em todas as pastas
 **/node_modules/
+
+
