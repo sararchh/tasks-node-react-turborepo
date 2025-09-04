@@ -111,4 +111,20 @@ export class TasksController {
       user: req.user,
     });
   }
+
+  @Get(':id/comments')
+  @ApiOperation({ summary: 'Get comments for a task with pagination' })
+  @ApiResponse({ status: 200, description: 'Comments retrieved successfully' })
+  @ApiResponse({ status: 404, description: 'Task not found' })
+  getTaskComments(
+    @Param('id') taskId: string,
+    @Query('page') page: number = 1,
+    @Query('size') size: number = 10,
+  ) {
+    return this.tasksClient.send('tasks.getComments', {
+      taskId,
+      page: Number(page),
+      size: Number(size),
+    });
+  }
 }

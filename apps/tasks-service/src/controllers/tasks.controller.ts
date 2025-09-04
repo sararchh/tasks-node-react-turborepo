@@ -73,7 +73,7 @@ export class TasksController {
       createCommentDto: CreateCommentDto;
       user: UserPayload;
     },
-  ): Promise<TaskResponseDto> {
+  ) {
     const { taskId, createCommentDto, user } = data;
     return this.tasksService.addComment(
       taskId,
@@ -81,5 +81,18 @@ export class TasksController {
       user.sub,
       user.username || user.email || 'Unknown User',
     );
+  }
+
+  @MessagePattern('tasks.getComments')
+  getComments(
+    @Payload()
+    data: {
+      taskId: string;
+      page: number;
+      size: number;
+    },
+  ) {
+    const { taskId, page, size } = data;
+    return this.tasksService.getTaskComments(taskId, { page, size });
   }
 }

@@ -14,7 +14,12 @@ import {
 import { TaskAssignment } from '../entities/task-assignment.entity';
 import { CreateTaskDto, UpdateTaskDto, TaskQueryDto } from '../dto/task.dto';
 import { TaskResponseDto, PaginatedTaskResponseDto } from '../dto/response.dto';
-import { CreateCommentDto } from '../dto/comment.dto';
+import {
+  CreateCommentDto,
+  CommentQueryDto,
+  CommentResponseDto,
+  PaginatedCommentResponseDto,
+} from '../dto/comment.dto';
 import { EventService } from './event.service';
 
 @Injectable()
@@ -269,7 +274,7 @@ export class TasksService {
     createCommentDto: CreateCommentDto,
     userId: string,
     userName: string,
-  ): Promise<TaskResponseDto> {
+  ): Promise<CommentResponseDto> {
     const task = await this.taskRepository.findOne({ where: { id: taskId } });
 
     if (!task) {
@@ -283,7 +288,7 @@ export class TasksService {
       authorName: userName,
     });
 
-    await this.commentRepository.save(comment);
+    const savedComment = await this.commentRepository.save(comment);
 
     await this.createHistoryEntry(
       taskId,
@@ -295,7 +300,66 @@ export class TasksService {
       userName,
     );
 
-    return this.findOne(taskId);
+    this.eventService.publishTaskEvent({
+      eventType: 'task.commented',
+      taskId: taskId,
+      userId,
+      data: {
+        commentId: savedComment.id,
+        content: savedComment.content,
+        authorName: userName,
+        createdAt: savedComment.createdAt,
+      },
+      timestamp: new Date(),
+    });
+
+    return {
+      id: savedComment.id,
+      content: savedComment.content,
+      authorId: savedComment.authorId,
+      authorName: savedComment.authorName,
+      taskId: savedComment.taskId,
+      createdAt: savedComment.createdAt,
+    };
+  }
+
+  async getTaskComments(
+    taskId: string,
+    query: CommentQueryDto,
+  ): Promise<PaginatedCommentResponseDto> {
+    const { page = 1, size = 10 } = query;
+    const skip = (page - 1) * size;
+
+    const task = await this.taskRepository.findOne({ where: { id: taskId } });
+    if (!task) {
+      throw new NotFoundException(`Task with ID ${taskId} not found`);
+    }
+
+    const [comments, total] = await this.commentRepository.findAndCount({
+      where: { taskId },
+      order: { createdAt: 'DESC' },
+      skip,
+      take: size,
+    });
+
+    const commentDtos = comments.map((comment) => ({
+      id: comment.id,
+      content: comment.content,
+      authorId: comment.authorId,
+      authorName: comment.authorName,
+      taskId: comment.taskId,
+      createdAt: comment.createdAt,
+    }));
+
+    return {
+      data: commentDtos,
+      meta: {
+        page,
+        size,
+        total,
+        totalPages: Math.ceil(total / size),
+      },
+    };
   }
 
   private async assignUsersToTask(
