@@ -1,4 +1,3 @@
-// Tipos customizados para contornar incompatibilidades do NestJS
 declare module '@nestjs/common' {
   interface DynamicModule {
     module?: any;
