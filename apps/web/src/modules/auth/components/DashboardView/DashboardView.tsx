@@ -1,21 +1,7 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
-import { PAGE_PATH_LOGIN } from '../../constants/AuthPathUrl';
+import { useAuth } from "../../hooks/useAuth";
 
 export function DashboardView() {
-  const { user, logout, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate(PAGE_PATH_LOGIN);
-    }
-  }, [isAuthenticated, navigate]);
-
-  if (!isAuthenticated) {
-    return <div>Redirecting to login...</div>;
-  }
+  const { user, logout } = useAuth();
 
   return (
     <div className="min-h-screen p-8">
@@ -34,8 +20,12 @@ export function DashboardView() {
           <h2 className="text-xl font-semibold mb-4">Welcome back!</h2>
           {user && (
             <div className="space-y-2">
-              <p><strong>Email:</strong> {user.email}</p>
-              <p><strong>Username:</strong> {user.username}</p>
+              <p>
+                <strong>Email:</strong> {user.email}
+              </p>
+              <p>
+                <strong>Username:</strong> {user.username}
+              </p>
             </div>
           )}
         </div>

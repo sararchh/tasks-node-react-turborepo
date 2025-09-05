@@ -7,7 +7,11 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+  //@ts-ignore
   plugins: [react(), tailwindcss()],
+  define: {
+    'process.env': {}
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
