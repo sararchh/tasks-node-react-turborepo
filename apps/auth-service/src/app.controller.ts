@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AppService } from './app.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
@@ -10,22 +10,27 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @MessagePattern('auth.register')
-  async register(registerDto: RegisterDto) {
+  async register(@Payload() registerDto: RegisterDto) {
     return this.appService.register(registerDto);
   }
 
   @MessagePattern('auth.login')
-  async login(loginDto: LoginDto) {
+  async login(@Payload() loginDto: LoginDto) {
     return this.appService.login(loginDto);
   }
 
   @MessagePattern('auth.refresh')
-  async refreshToken(refreshTokenDto: RefreshTokenDto) {
+  async refreshToken(@Payload() refreshTokenDto: RefreshTokenDto) {
     return this.appService.refreshToken(refreshTokenDto.refreshToken);
   }
 
   @MessagePattern('auth.validate')
-  async validateUser(data: { userId: string }) {
+  async validateUser(@Payload() data: { userId: string }) {
     return this.appService.validateUser(data.userId);
+  }
+
+  @MessagePattern('auth.getUsers')
+  async getUsers() {
+    return this.appService.getUsers();
   }
 }
