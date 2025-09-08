@@ -126,11 +126,21 @@ export class AppService {
 
     await this.refreshTokenRepository.save(refreshTokenEntity);
 
+    const userData = {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      isActive: user.isActive,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
+
     return {
       accessToken,
       refreshToken,
       tokenType: 'Bearer',
       expiresIn: 900, // 15 minutes in seconds
+      user: userData,
     };
   }
 

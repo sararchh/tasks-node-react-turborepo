@@ -43,6 +43,17 @@ export class AuthController {
         refreshToken: { type: 'string' },
         tokenType: { type: 'string' },
         expiresIn: { type: 'number' },
+        user: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            email: { type: 'string' },
+            username: { type: 'string' },
+            isActive: { type: 'boolean' },
+            createdAt: { type: 'string' },
+            updatedAt: { type: 'string' },
+          },
+        },
       },
     },
   })
@@ -66,6 +77,17 @@ export class AuthController {
         refreshToken: { type: 'string' },
         tokenType: { type: 'string' },
         expiresIn: { type: 'number' },
+        user: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            email: { type: 'string' },
+            username: { type: 'string' },
+            isActive: { type: 'boolean' },
+            createdAt: { type: 'string' },
+            updatedAt: { type: 'string' },
+          },
+        },
       },
     },
   })
@@ -87,6 +109,17 @@ export class AuthController {
         refreshToken: { type: 'string' },
         tokenType: { type: 'string' },
         expiresIn: { type: 'number' },
+        user: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            email: { type: 'string' },
+            username: { type: 'string' },
+            isActive: { type: 'boolean' },
+            createdAt: { type: 'string' },
+            updatedAt: { type: 'string' },
+          },
+        },
       },
     },
   })

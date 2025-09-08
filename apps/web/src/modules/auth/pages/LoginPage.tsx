@@ -1,12 +1,13 @@
 import { LoginView } from '../components/LoginView';
 import { AppPage } from '../../../shared/core/Page';
-import { PAGE_PATH_LOGIN } from '../constants/AuthPathUrl';
+import PATHS from '@/routes/paths';
+
 
 export function LoginPageViewElement() {
   return <LoginView />;
 }
 
 export const LoginPageRoute = new AppPage({
-  path: PAGE_PATH_LOGIN,
+  path: PATHS.login,
   element: <LoginPageViewElement />,
 });

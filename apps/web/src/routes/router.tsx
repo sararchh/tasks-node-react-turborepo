@@ -2,7 +2,9 @@ import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "../modules/auth/contexts";
 import { queryClient } from "./query-client";
-import { LoginPageRoute, RegisterPageRoute, DashboardPageRoute } from "../modules/auth";
+import { LoginPageRoute, RegisterPageRoute } from "../modules/auth";
+import { DashboardPageRoute } from "../modules/dashboard";
+import PATHS from "./paths";
 
 export const router = createBrowserRouter([
   {
@@ -16,7 +18,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Navigate to="/dashboard" replace />,
+        element: <Navigate to={PATHS.login} replace />,
       },
       {
         path: LoginPageRoute.path,
