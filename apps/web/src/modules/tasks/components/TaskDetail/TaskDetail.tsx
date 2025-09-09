@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Task, TaskPriority, TaskStatus } from '../../types/task.types';
-import { useComments, useAddComment } from '../../hooks/useTasks';
+import { useGetComments, useAddComment } from '../../hooks/useTasks';
 
 interface TaskDetailProps {
   open: boolean;
@@ -47,13 +47,13 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
   const [showCommentForm, setShowCommentForm] = useState(false);
   const [commentsPage, setCommentsPage] = useState(1);
 
-  const { data: commentsData, isLoading: commentsLoading } = useComments({
+  const { data: commentsData, isLoading: commentsLoading } = useGetComments({
     taskId: task?.id || '',
     page: commentsPage,
     size: 10,
   });
 
-  const addCommentMutation = useAddComment();
+  const { addComment, isLoading: addCommentLoading } = useAddComment();
 
   const {
     register,
@@ -65,7 +65,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
   const handleAddComment = (data: CommentForm) => {
     if (!task) return;
 
-    addCommentMutation.mutate(
+    addComment(
       { taskId: task.id, data },
       {
         onSuccess: () => {
@@ -176,7 +176,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
               <Button
                 size="sm"
                 onClick={() => setShowCommentForm(!showCommentForm)}
-                disabled={addCommentMutation.isPending}
+                disabled={addCommentLoading}
               >
                 <MessageCircle size={16} className="mr-1" />
                 Adicionar Comentário
@@ -203,8 +203,8 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
                     <Button
                       type="submit"
                       size="sm"
-                      isLoading={addCommentMutation.isPending}
-                      disabled={addCommentMutation.isPending}
+                      isLoading={addCommentLoading}
+                      disabled={addCommentLoading}
                     >
                       Enviar
                     </Button>

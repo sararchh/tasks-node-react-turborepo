@@ -6,7 +6,7 @@ import { KanbanBoard } from '../components/KanbanBoard';
 import { TaskFilters } from '../components/TaskFilters';
 import { TaskForm } from '../components/TaskForm';
 import { TaskDetail } from '../components/TaskDetail';
-import { useTasks, useCreateTask, useUpdateTask, useDeleteTask } from '../hooks/useTasks';
+import { useGetTasks, useCreateTask, useUpdateTask, useDeleteTask } from '../hooks/useTasks';
 import { Task, TaskQueryDto, TaskStatus } from '../types/task.types';
 
 export const TasksDashboard: React.FC = () => {
@@ -15,7 +15,7 @@ export const TasksDashboard: React.FC = () => {
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
-  const { data: tasksData, isLoading, error } = useTasks({
+  const { data: tasksData, isLoading, error } = useGetTasks({
     ...filters,
     page: 1,
     size: 100, // Carregar mais tarefas para o Kanban
@@ -24,12 +24,12 @@ export const TasksDashboard: React.FC = () => {
   const tasks = useMemo(() => tasksData?.tasks || [], [tasksData?.tasks]);
   const total = tasksData?.total || 0;
 
-  const createTaskMutation = useCreateTask();
-  const updateTaskMutation = useUpdateTask();
-  const deleteTaskMutation = useDeleteTask();
+  const { createTask, isLoading: createLoading } = useCreateTask();
+  const { updateTask, isLoading: updateLoading } = useUpdateTask();
+  const { deleteTask, isLoading: deleteLoading } = useDeleteTask();
 
   const handleCreateTask = (data: any) => {
-    createTaskMutation.mutate(data, {
+    createTask(data, {
       onSuccess: () => {
         setShowTaskForm(false);
       },
@@ -39,7 +39,7 @@ export const TasksDashboard: React.FC = () => {
   const handleUpdateTask = (data: any) => {
     if (!editingTask) return;
 
-    updateTaskMutation.mutate(
+    updateTask(
       { id: editingTask.id, data },
       {
         onSuccess: () => {
@@ -52,7 +52,7 @@ export const TasksDashboard: React.FC = () => {
 
   const handleDeleteTask = (taskId: string) => {
     if (window.confirm('Tem certeza que deseja excluir esta tarefa?')) {
-      deleteTaskMutation.mutate(taskId, {
+      deleteTask(taskId, {
         onSuccess: () => {
           setSelectedTask(null);
         },
@@ -74,7 +74,7 @@ export const TasksDashboard: React.FC = () => {
   };
 
   const handleTaskMove = (taskId: string, newStatus: TaskStatus) => {
-    updateTaskMutation.mutate(
+    updateTask(
       { id: taskId, data: { status: newStatus } },
       {
         onSuccess: () => {
@@ -97,7 +97,7 @@ export const TasksDashboard: React.FC = () => {
           </div>
           <Button
             onClick={() => setShowTaskForm(true)}
-            disabled={createTaskMutation.isPending}
+            disabled={createLoading}
           >
             <Plus size={16} className="mr-2" />
             Nova Tarefa
@@ -146,7 +146,7 @@ export const TasksDashboard: React.FC = () => {
         open={showTaskForm}
         onOpenChange={setShowTaskForm}
         onSubmit={handleCreateTask}
-        isLoading={createTaskMutation.isPending}
+        isLoading={createLoading}
       />
 
       <TaskForm
@@ -154,7 +154,7 @@ export const TasksDashboard: React.FC = () => {
         onOpenChange={(open) => !open && setEditingTask(null)}
         onSubmit={handleUpdateTask}
         task={editingTask || undefined}
-        isLoading={updateTaskMutation.isPending}
+        isLoading={updateLoading}
       />
 
       <TaskDetail

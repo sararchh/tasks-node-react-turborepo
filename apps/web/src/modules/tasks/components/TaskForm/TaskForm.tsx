@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { TaskPriority, TaskStatus, Task } from '../../types/task.types';
-import { useUsers } from '../../hooks/useTasks';
+import { useGetUsers } from '../../hooks/useGetUsers';
 
 interface TaskFormData {
   title: string;
@@ -34,7 +34,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
   isLoading = false,
 }) => {
   const isEditing = !!task;
-  const { data: users = [] } = useUsers();
+  const { data: users = [] } = useGetUsers();
 
   const {
     register,
