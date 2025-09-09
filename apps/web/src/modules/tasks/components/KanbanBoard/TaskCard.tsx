@@ -80,7 +80,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
       {...attributes}
       {...listeners}
       className={`
-        bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 cursor-move
+        bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 cursor-move !p-4
         ${isDragging || isSortableDragging ? "opacity-50 rotate-2 shadow-lg" : ""}
         ${isOverdue ? "border-red-300 bg-red-50" : ""}
       `}

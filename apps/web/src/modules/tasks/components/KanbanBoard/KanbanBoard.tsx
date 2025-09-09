@@ -116,9 +116,9 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
       onDragEnd={handleDragEnd}
       onDragOver={handleDragOver}
     >
-      <div className="p-6">
-        {/* Desktop Layout */}
-        <div className="hidden lg:flex gap-6 overflow-x-auto pb-6">
+      <div className="p-6 h-full">
+        {/* Desktop Layout - Full Width Grid */}
+        <div className="hidden lg:grid lg:grid-cols-4 gap-6 h-full">
           {columns.map((column) => (
             <KanbanColumn
               key={column.id}
@@ -134,8 +134,25 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
           ))}
         </div>
 
-        {/* Mobile/Tablet Layout */}
-        <div className="lg:hidden space-y-6">
+        {/* Tablet Layout - 2 columns */}
+        <div className="hidden md:grid md:grid-cols-2 lg:hidden gap-6 h-full">
+          {columns.map((column) => (
+            <KanbanColumn
+              key={column.id}
+              id={column.id}
+              title={column.title}
+              color={column.color}
+              headerColor={column.headerColor}
+              tasks={column.tasks}
+              onTaskEdit={onTaskEdit}
+              onTaskDelete={onTaskDelete}
+              onTaskView={onTaskView}
+            />
+          ))}
+        </div>
+
+        {/* Mobile Layout - Single column stack */}
+        <div className="md:hidden space-y-6 h-full">
           {columns.map((column) => (
             <KanbanColumn
               key={column.id}

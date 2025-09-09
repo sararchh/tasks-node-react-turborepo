@@ -131,7 +131,7 @@ export const TasksDashboard: React.FC = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 ">
+      <main className="flex-1 h-full">
         <div className=" sm:px-6 !m-4">
           {/* Page Header */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center !mb-4 space-y-4 sm:space-y-0">
@@ -195,7 +195,7 @@ export const TasksDashboard: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+              <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden min-h-[70vh]">
                 <KanbanBoard
                   tasks={tasks}
                   onTaskMove={handleTaskMove}

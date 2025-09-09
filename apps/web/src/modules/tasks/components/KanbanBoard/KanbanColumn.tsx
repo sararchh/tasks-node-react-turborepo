@@ -36,7 +36,7 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
     <div
       ref={setNodeRef}
       className={`
-        flex flex-col w-full lg:w-80 min-h-[500px] lg:min-h-[600px] rounded-lg border-2 transition-all duration-200
+        flex flex-col w-full h-full min-h-[500px] lg:min-h-[600px] rounded-lg border-2 transition-all duration-200
         ${color}
         ${isOver ? 'border-blue-500 shadow-lg scale-105' : 'border-gray-300'}
       `}
@@ -55,7 +55,7 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
       </div>
 
       {/* Tasks */}
-      <div className="flex-1 p-4 space-y-3 overflow-y-auto max-h-[400px] lg:max-h-[500px]">
+      <div className="flex-1 !p-2 !space-y-3  overflow-y-auto max-h-[400px] lg:max-h-[500px]">
         <SortableContext items={tasks.map(t => t.id)} strategy={verticalListSortingStrategy}>
           {tasks.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-gray-500">
