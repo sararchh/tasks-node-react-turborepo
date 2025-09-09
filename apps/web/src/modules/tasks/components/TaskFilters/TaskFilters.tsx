@@ -10,8 +10,6 @@ interface TaskFiltersData {
   search?: string;
   status?: TaskStatus | "";
   priority?: TaskPriority | "";
-  assignedToMe?: boolean;
-  createdByMe?: boolean;
 }
 
 interface TaskFiltersProps {
@@ -28,8 +26,6 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
       search: "",
       status: "",
       priority: "",
-      assignedToMe: false,
-      createdByMe: false,
     },
   });
 
@@ -76,57 +72,110 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
   }, [watch, handleFilterChange]);
 
   return (
-    <div className="bg-white p-4 rounded-lg border space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className="font-medium text-gray-900">Filtros</h3>
+    <div className="bg-gradient-to-br from-white to-gray-50 !p-4 rounded-xl border border-gray-200 shadow-sm !mb-4">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0 mb-6">
+        <div>
+          <p className="text-sm text-gray-600 mt-1">
+            Encontre suas tarefas rapidamente
+          </p>
+        </div>
+
         <Button
           type="button"
           variant="ghost"
           size="sm"
           onClick={handleClearFilters}
-          className="text-gray-500 hover:text-gray-700"
+          className="text-gray-600 hover:text-red-600 hover:bg-red-50 border border-gray-300 hover:border-red-300 transition-all duration-200 self-start sm:self-auto"
         >
-          <X size={16} className="mr-1" />
-          Limpar
+          <X size={16} className="mr-2" />
+          Limpar Filtros
         </Button>
       </div>
 
-      <form className="space-y-4">
-        {/* Search */}
-        <div>
-          <div className="relative">
-            <Search
-              size={16}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-            />
+      <form className="space-y-6">
+        {/* Search Bar */}
+        <div className="relative">
+          <label className="block text-sm font-medium text-gray-700 mb-3">
+            🔍 Pesquisar Tarefas
+          </label>
+          <div className="relative group">
             <Input
               {...register("search")}
-              placeholder="Pesquisar tarefas..."
-              className="w-full pl-10"
+              placeholder="Digite o título, descrição ou responsável..."
+              className="w-full pl-12 pr-4 h-12 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 bg-white shadow-sm transition-all duration-200 text-gray-900 placeholder-gray-500"
             />
           </div>
         </div>
 
-        {/* Status and Priority */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <Select {...register("status")}>
-              <option value="">Todos os status</option>
-              <option value={TaskStatus.TODO}>A Fazer</option>
-              <option value={TaskStatus.IN_PROGRESS}>Em Progresso</option>
-              <option value={TaskStatus.REVIEW}>Em Revisão</option>
-              <option value={TaskStatus.DONE}>Concluído</option>
-            </Select>
+        {/* Filter Grid */}
+        <div className="grid grid-cols-1 !mt-4 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Status Filter */}
+          <div className="space-y-2">
+            <label className="flex items-center text-sm font-medium text-gray-700">
+              📊 Status
+            </label>
+            <div className="relative">
+              <select
+                {...register("status")}
+                className="w-full h-12 px-4 border-2 border-gray-200 !rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 bg-white shadow-sm transition-all duration-200 text-gray-900 appearance-none cursor-pointer"
+              >
+                <option value="">Todos os status</option>
+                <option value={TaskStatus.TODO}>⏳ A Fazer</option>
+                <option value={TaskStatus.IN_PROGRESS}>🔄 Em Progresso</option>
+                <option value={TaskStatus.REVIEW}>👀 Em Revisão</option>
+                <option value={TaskStatus.DONE}>✅ Concluído</option>
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                <svg
+                  className="w-5 h-5 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+            </div>
           </div>
 
-          <div>
-            <Select {...register("priority")}>
-              <option value="">Todas as prioridades</option>
-              <option value={TaskPriority.LOW}>Baixa</option>
-              <option value={TaskPriority.MEDIUM}>Média</option>
-              <option value={TaskPriority.HIGH}>Alta</option>
-              <option value={TaskPriority.URGENT}>Urgente</option>
-            </Select>
+          {/* Priority Filter */}
+          <div className="space-y-2">
+            <label className="flex items-center text-sm font-medium text-gray-700">
+              🚨 Prioridade
+            </label>
+            <div className="relative">
+              <select
+                {...register("priority")}
+                className="w-full h-12 px-4 border-2 border-gray-200 !rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 bg-white shadow-sm transition-all duration-200 text-gray-900 appearance-none cursor-pointer"
+              >
+                <option value="">Todas as prioridades</option>
+                <option value={TaskPriority.LOW}>🟢 Baixa</option>
+                <option value={TaskPriority.MEDIUM}>🟡 Média</option>
+                <option value={TaskPriority.HIGH}>🟠 Alta</option>
+                <option value={TaskPriority.URGENT}>🔴 Urgente</option>
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                <svg
+                  className="w-5 h-5 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
       </form>

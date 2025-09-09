@@ -116,20 +116,40 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
       onDragEnd={handleDragEnd}
       onDragOver={handleDragOver}
     >
-      <div className="flex gap-6 overflow-x-auto pb-6 px-4">
-        {columns.map((column) => (
-          <KanbanColumn
-            key={column.id}
-            id={column.id}
-            title={column.title}
-            color={column.color}
-            headerColor={column.headerColor}
-            tasks={column.tasks}
-            onTaskEdit={onTaskEdit}
-            onTaskDelete={onTaskDelete}
-            onTaskView={onTaskView}
-          />
-        ))}
+      <div className="p-6">
+        {/* Desktop Layout */}
+        <div className="hidden lg:flex gap-6 overflow-x-auto pb-6">
+          {columns.map((column) => (
+            <KanbanColumn
+              key={column.id}
+              id={column.id}
+              title={column.title}
+              color={column.color}
+              headerColor={column.headerColor}
+              tasks={column.tasks}
+              onTaskEdit={onTaskEdit}
+              onTaskDelete={onTaskDelete}
+              onTaskView={onTaskView}
+            />
+          ))}
+        </div>
+
+        {/* Mobile/Tablet Layout */}
+        <div className="lg:hidden space-y-6">
+          {columns.map((column) => (
+            <KanbanColumn
+              key={column.id}
+              id={column.id}
+              title={column.title}
+              color={column.color}
+              headerColor={column.headerColor}
+              tasks={column.tasks}
+              onTaskEdit={onTaskEdit}
+              onTaskDelete={onTaskDelete}
+              onTaskView={onTaskView}
+            />
+          ))}
+        </div>
       </div>
 
       <DragOverlay>
