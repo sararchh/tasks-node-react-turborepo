@@ -15,18 +15,6 @@
     },
     {
       "path": "./apps/notifications-service"
-    },
-    {
-      "path": "./packages/types"
-    },
-    {
-      "path": "./packages/eslint-config"
-    },
-    {
-      "path": "./packages/tsconfig"
-    },
-    {
-      "path": "./packages/utils"
     }
   ]
 }
