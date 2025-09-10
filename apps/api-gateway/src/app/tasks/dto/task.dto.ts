@@ -59,6 +59,12 @@ export class CreateTaskDto {
   @IsArray()
   @IsUUID('4', { each: true })
   assignedUserIds?: string[];
+
+  @ApiPropertyOptional({
+    description: 'Array of users with id and username to assign to the task',
+  })
+  @IsOptional()
+  assignedUsers?: Array<{ id: string; username: string }>;
 }
 
 export class UpdateTaskDto {
@@ -106,6 +112,12 @@ export class UpdateTaskDto {
   @IsArray()
   @IsUUID('4', { each: true })
   assignedUserIds?: string[];
+
+  @ApiPropertyOptional({
+    description: 'Array of users with id and username to assign to the task',
+  })
+  @IsOptional()
+  assignedUsers?: Array<{ id: string; username: string }>;
 }
 
 export class TaskQueryDto {

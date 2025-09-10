@@ -67,10 +67,20 @@ export class TasksService {
     );
 
     if (createTaskDto.assignedUserIds?.length > 0) {
+      let userIdToNameMap: Map<string, string> | undefined;
+
+      if (createTaskDto.assignedUsers?.length > 0) {
+        userIdToNameMap = new Map();
+        createTaskDto.assignedUsers.forEach((user) => {
+          userIdToNameMap.set(user.id, user.username);
+        });
+      }
+
       await this.assignUsersToTask(
         savedTask.id,
         createTaskDto.assignedUserIds,
         userId,
+        userIdToNameMap,
       );
     }
 
@@ -233,10 +243,20 @@ export class TasksService {
     );
 
     if (updateTaskDto.assignedUserIds !== undefined) {
+      let userIdToNameMap: Map<string, string> | undefined;
+
+      if (updateTaskDto.assignedUsers?.length > 0) {
+        userIdToNameMap = new Map();
+        updateTaskDto.assignedUsers.forEach((user) => {
+          userIdToNameMap.set(user.id, user.username);
+        });
+      }
+
       await this.updateTaskAssignments(
         id,
         updateTaskDto.assignedUserIds,
         userId,
+        userIdToNameMap,
       );
     }
 
@@ -366,12 +386,13 @@ export class TasksService {
     taskId: string,
     userIds: string[],
     assignedBy: string,
+    userIdToNameMap?: Map<string, string>,
   ): Promise<void> {
     const assignments = userIds.map((userId) =>
       this.assignmentRepository.create({
         taskId,
         userId,
-        userName: `User ${userId}`,
+        userName: userIdToNameMap?.get(userId) || `User ${userId}`,
         assignedBy,
       }),
     );
@@ -383,11 +404,17 @@ export class TasksService {
     taskId: string,
     newUserIds: string[],
     updatedBy: string,
+    userIdToNameMap?: Map<string, string>,
   ): Promise<void> {
     await this.assignmentRepository.delete({ taskId });
 
     if (newUserIds.length > 0) {
-      await this.assignUsersToTask(taskId, newUserIds, updatedBy);
+      await this.assignUsersToTask(
+        taskId,
+        newUserIds,
+        updatedBy,
+        userIdToNameMap,
+      );
     }
   }
 

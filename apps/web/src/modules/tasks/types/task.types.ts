@@ -70,6 +70,7 @@ export interface CreateTaskDto {
   deadline?: string;
   priority?: TaskPriority;
   assignedUserIds?: string[];
+  assignedUsers?: Array<{ id: string; username: string }>;
 }
 
 export interface UpdateTaskDto {
@@ -79,6 +80,7 @@ export interface UpdateTaskDto {
   priority?: TaskPriority;
   status?: TaskStatus;
   assignedUserIds?: string[];
+  assignedUsers?: Array<{ id: string; username: string }>;
 }
 
 export interface TaskQueryDto {

@@ -16,6 +16,7 @@ interface TaskFormData {
   priority: TaskPriority;
   status?: TaskStatus;
   assignedUserIds: string[];
+  assignedUsers?: Array<{ id: string; username: string }>;
 }
 
 interface TaskFormProps {
@@ -74,6 +75,18 @@ export const TaskForm: React.FC<TaskFormProps> = ({
     if (!isEditing) {
       delete data.status;
     }
+
+    // Add assignedUsers information based on selected IDs
+    if (data.assignedUserIds && data.assignedUserIds.length > 0) {
+      data.assignedUsers = data.assignedUserIds.map((userId) => {
+        const user = users.find((u) => u.id === userId);
+        return {
+          id: userId,
+          username: user?.username || user?.email || 'Unknown User',
+        };
+      });
+    }
+
     onSubmit(data);
     if (!isEditing) {
       reset();

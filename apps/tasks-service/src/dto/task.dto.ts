@@ -34,6 +34,9 @@ export class CreateTaskDto {
   @IsArray()
   @IsUUID('4', { each: true })
   assignedUserIds?: string[];
+
+  @IsOptional()
+  assignedUsers?: Array<{ id: string; username: string }>;
 }
 
 export class UpdateTaskDto {
@@ -65,6 +68,9 @@ export class UpdateTaskDto {
   @IsArray()
   @IsUUID('4', { each: true })
   assignedUserIds?: string[];
+
+  @IsOptional()
+  assignedUsers?: Array<{ id: string; username: string }>;
 }
 
 export class TaskQueryDto {
