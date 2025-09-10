@@ -34,12 +34,10 @@ const Dialog: React.FC<DialogProps> = ({ open, onOpenChange, children }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/50"
         onClick={() => onOpenChange(false)}
       />
-      {/* Content */}
       <div className="relative z-50 max-h-[90vh] overflow-y-auto">
         {children}
       </div>

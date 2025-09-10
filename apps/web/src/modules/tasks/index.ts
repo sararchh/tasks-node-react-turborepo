@@ -1,4 +1,5 @@
-export { TasksDashboard } from './pages/TasksDashboard';
+export { TasksDashboardPageRoute } from './pages/TasksDashboardPage';
+export { TasksDashboard } from './components/TasksDashboard';
 export { TaskForm } from './components/TaskForm';
 export { TaskDetail } from './components/TaskDetail';
 export { TaskFilters } from './components/TaskFilters';

@@ -123,7 +123,6 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-6xl max-h-[90vh] overflow-hidden p-0 gap-0">
         <div className="flex flex-col h-full max-h-[90vh]">
-          {/* Header */}
           <div className="flex-shrink-0 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 border-b border-slate-200 !p-4">
             <div className="flex items-start justify-between ">
               <div className="flex-1 min-w-0 gap-6">
@@ -170,10 +169,8 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
             </div>
           </div>
 
-          {/* Content */}
           <div className="flex-1 overflow-y-auto !p-4 bg-slate-50/30">
             <div className="max-w-4xl mx-auto space-y-6">
-              {/* Task Description */}
               <Card className="border-slate-200 shadow-sm !mb-4 !p-4">
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center text-lg text-slate-900">
@@ -190,7 +187,6 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
                 </CardContent>
               </Card>
 
-            {/* Assignments */}
             {task.assignments.length > 0 && (
               <Card className="border-slate-200 shadow-sm !mb-4 !p-4">
                 <CardHeader className="pb-4">
@@ -222,7 +218,6 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
               </Card>
             )}
 
-            {/* History */}
             {task.history.length > 0 && (
               <Card className="border-slate-200 shadow-sm !mb-4 !p-4">
                 <CardHeader className="pb-4">
@@ -263,7 +258,6 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
               </Card>
             )}
 
-            {/* Comments Section */}
             <Card className="border-slate-200 shadow-sm !mb-4 !p-4">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
@@ -283,7 +277,6 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                {/* Comment Form */}
                 {showCommentForm && (
                   <div className="bg-gradient-to-r from-blue-50 to-indigo-50 !mt-2 rounded-lg border border-blue-100 !p-4">
                     <form onSubmit={handleSubmit(handleAddComment)} className="space-y-4">
@@ -326,7 +319,6 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
                   </div>
                 )}
 
-                {/* Comments List */}
                 <div className="space-y-4">
                   {commentsLoading ? (
                     Array.from({ length: 3 }).map((_, i) => (
@@ -368,7 +360,6 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
                     </div>
                   )}
 
-                  {/* Load more comments */}
                   {commentsData && commentsData.totalPages > commentsPage && (
                     <div className="text-center pt-4">
                       <Button

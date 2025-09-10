@@ -117,7 +117,6 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
       onDragOver={handleDragOver}
     >
       <div className="p-6 h-full">
-        {/* Desktop Layout - Full Width Grid */}
         <div className="hidden lg:grid lg:grid-cols-4 gap-6 h-full">
           {columns.map((column) => (
             <KanbanColumn
@@ -134,7 +133,6 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
           ))}
         </div>
 
-        {/* Tablet Layout - 2 columns */}
         <div className="hidden md:grid md:grid-cols-2 lg:hidden gap-6 h-full">
           {columns.map((column) => (
             <KanbanColumn
@@ -151,7 +149,6 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
           ))}
         </div>
 
-        {/* Mobile Layout - Single column stack */}
         <div className="md:hidden space-y-6 h-full">
           {columns.map((column) => (
             <KanbanColumn

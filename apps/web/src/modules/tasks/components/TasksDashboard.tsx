@@ -30,7 +30,7 @@ export const TasksDashboard: React.FC = () => {
   } = useGetTasks({
     ...filters,
     page: 1,
-    size: 100, // Carregar mais tarefas para o Kanban
+    size: 100,
   });
 
   const tasks = useMemo(() => tasksData?.tasks || [], [tasksData?.tasks]);

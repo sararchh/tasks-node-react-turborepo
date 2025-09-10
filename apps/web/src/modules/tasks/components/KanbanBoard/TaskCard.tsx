@@ -90,7 +90,6 @@ export const TaskCard: React.FC<TaskCardProps> = ({
       }}
     >
       <div className="p-4">
-        {/* Header */}
         <div className="flex items-start justify-between mb-3">
           <h4 className="!font-semibold text-gray-900 text-sm leading-tight line-clamp-2 flex-1 mr-2">
             {task.title}
@@ -121,14 +120,12 @@ export const TaskCard: React.FC<TaskCardProps> = ({
           </div>
         </div>
 
-        {/* Description */}
         {task.description && (
           <p className="text-gray-600 text-xs mb-3 line-clamp-2">
             {task.description}
           </p>
         )}
 
-        {/* Priority Badge */}
         <div className="flex items-center gap-2 mb-3">
           <Badge className={`text-xs px-2 py-1 ${getPriorityColor(task.priority)}`}>
             <div className="flex items-center gap-1">
@@ -138,7 +135,6 @@ export const TaskCard: React.FC<TaskCardProps> = ({
           </Badge>
         </div>
 
-        {/* Deadline */}
         {task.deadline && (
           <div
             className={`flex items-center gap-1 text-xs mb-3 ${
@@ -155,10 +151,8 @@ export const TaskCard: React.FC<TaskCardProps> = ({
           </div>
         )}
 
-        {/* Footer */}
         <div className="flex items-center justify-between text-xs text-gray-500">
           <div className="flex items-center gap-3">
-            {/* Assignments */}
             {task.assignments && task.assignments.length > 0 && (
               <div className="flex items-center gap-1">
                 <Users size={12} />
@@ -166,7 +160,6 @@ export const TaskCard: React.FC<TaskCardProps> = ({
               </div>
             )}
 
-            {/* Comments */}
             {task.comments && task.comments.length > 0 && (
               <div className="flex items-center gap-1">
                 <MessageCircle size={12} />
@@ -175,7 +168,6 @@ export const TaskCard: React.FC<TaskCardProps> = ({
             )}
           </div>
 
-          {/* Created date */}
           <div className="text-xs text-gray-400">
             {format(new Date(task.createdAt), "dd/MM", { locale: ptBR })}
           </div>

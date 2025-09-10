@@ -131,7 +131,6 @@ export const TaskForm: React.FC<TaskFormProps> = ({
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-w-6xl max-h-[90vh] overflow-hidden p-0 gap-0">
         <div className="flex flex-col h-full max-h-[90vh]">
-          {/* Header */}
           <div className="flex-shrink-0 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 border-b border-slate-200 !p-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-sm">
@@ -154,14 +153,12 @@ export const TaskForm: React.FC<TaskFormProps> = ({
             </div>
           </div>
 
-          {/* Content */}
           <div className="flex-1 overflow-y-auto !p-4 bg-slate-50/30">
             <form
               onSubmit={handleSubmit(handleFormSubmit)}
               className="max-w-5xl mx-auto space-y-4"
             >
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Basic Information */}
                 <Card className="border-slate-200 shadow-sm !mb-4 !p-4">
                   <CardHeader className="pb-4">
                     <CardTitle className="flex items-center text-lg text-slate-900">
@@ -239,7 +236,6 @@ export const TaskForm: React.FC<TaskFormProps> = ({
                   </CardContent>
                 </Card>
 
-                {/* Configuration */}
                 <Card className="border-slate-200 shadow-sm !mb-4 !p-4">
                   <CardHeader className="pb-4">
                     <CardTitle className="flex items-center text-lg text-slate-900">
@@ -319,7 +315,6 @@ export const TaskForm: React.FC<TaskFormProps> = ({
                 </Card>
               </div>
 
-              {/* User Assignment */}
               <Card className="border-slate-200 shadow-sm !mb-4 !p-4">
                 <CardHeader className="!pb-4">
                   <CardTitle className="flex items-center text-lg text-slate-900">
@@ -370,7 +365,6 @@ export const TaskForm: React.FC<TaskFormProps> = ({
             </form>
           </div>
 
-          {/* Footer */}
           <div className="flex-shrink-0 bg-white border-t border-slate-200 !p-4">
             <DialogFooter className="gap-3">
               <Button

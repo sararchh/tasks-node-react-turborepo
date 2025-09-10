@@ -3,7 +3,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "../modules/auth/contexts";
 import { queryClient } from "./query-client";
 import { LoginPageRoute, RegisterPageRoute } from "../modules/auth";
-import { TasksDashboard } from "../modules/tasks";
+import { TasksDashboardPageRoute } from "../modules/tasks";
 import PATHS from "./paths";
 
 export const router = createBrowserRouter([
@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
       },
       {
         path: PATHS.dashboard.index,
-        element: <TasksDashboard />,
+        element: TasksDashboardPageRoute.element,
       },
     ],
   },
