@@ -5,6 +5,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthController } from './app/auth/auth.controller';
+import { UsersController } from './app/users/users.controller';
+import { TasksController } from './app/tasks/tasks.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
@@ -63,7 +65,12 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       },
     ]),
   ],
-  controllers: [AppController, AuthController],
+  controllers: [
+    AppController,
+    AuthController,
+    UsersController,
+    TasksController,
+  ],
   providers: [
     AppService,
     {

@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 
-const API_URL = process.env.VITE_API_URL || 'http://localhost:3001';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 export const api = axios.create({
   baseURL: `${API_URL}/api`,
@@ -18,8 +18,8 @@ api.interceptors.request.use((config) => {
 });
 
 api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
+  (response: AxiosResponse) => response,
+  async (error: AxiosError) => {
     if (error.response?.status === 401) {
       const refreshToken = localStorage.getItem('refreshToken');
       if (refreshToken) {
@@ -27,10 +27,12 @@ api.interceptors.response.use(
           const refreshResponse = await axios.post(`${API_URL}/auth/refresh`, {
             refreshToken,
           });
-          const { accessToken } = refreshResponse.data;
+          const { accessToken } = refreshResponse.data as { accessToken: string };
           localStorage.setItem('accessToken', accessToken);
-          error.config.headers.Authorization = `Bearer ${accessToken}`;
-          return axios(error.config);
+          if (error.config) {
+            error.config.headers.Authorization = `Bearer ${accessToken}`;
+            return axios(error.config);
+          }
         } catch {
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');

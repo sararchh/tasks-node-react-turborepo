@@ -4,7 +4,8 @@ import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLogin } from "../../hooks/useLogin";
-import { PAGE_PATH_DASHBOARD } from "../../constants/AuthPathUrl";
+import { useAuth } from "../../hooks/useAuth";
+import PATHS from "@/routes/paths";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -21,6 +22,7 @@ type LoginForm = z.infer<typeof loginSchema>;
 
 export function LoginView() {
   const { login, isLoading } = useLogin();
+  const { setUser } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -35,9 +37,12 @@ export function LoginView() {
   const onSubmit = async (data: LoginForm) => {
     setLoading(true);
     try {
-      await login(data);
-      toast.success("Login realizado com sucesso!");
-      void navigate(PAGE_PATH_DASHBOARD);
+      const result = await login(data);
+      if (result) {
+        setUser(result.user);
+        toast.success("Login realizado com sucesso!");
+        void navigate(PATHS.dashboard.index);
+      }
     } catch {
       toast.error("Falha no login. Verifique suas credenciais.");
     } finally {

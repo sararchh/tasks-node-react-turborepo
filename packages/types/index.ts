@@ -2,6 +2,9 @@ export interface User {
   id: string;
   email: string;
   username: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface LoginRequest {
@@ -18,6 +21,8 @@ export interface RegisterRequest {
 export interface AuthResponse {
   accessToken: string;
   refreshToken: string;
+  tokenType: string;
+  expiresIn: number;
   user: User;
 }
 

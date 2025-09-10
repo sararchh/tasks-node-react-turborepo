@@ -46,8 +46,8 @@ export class AppService {
       const savedUser = await this.userRepository.save(user);
 
       return this.generateTokens(savedUser);
-    } catch (error) {
-      throw new ConflictException('User registration failed', error);
+    } catch {
+      throw new ConflictException('User registration failed');
     }
   }
 
@@ -69,8 +69,8 @@ export class AppService {
       }
 
       return this.generateTokens(user);
-    } catch (error) {
-      throw new UnauthorizedException('Login failed', error);
+    } catch {
+      throw new UnauthorizedException('Login failed');
     }
   }
 
@@ -96,7 +96,7 @@ export class AppService {
       await this.refreshTokenRepository.save(storedToken);
 
       return this.generateTokens(storedToken.user);
-    } catch (error) {
+    } catch {
       throw new UnauthorizedException('Invalid refresh token');
     }
   }
@@ -126,11 +126,21 @@ export class AppService {
 
     await this.refreshTokenRepository.save(refreshTokenEntity);
 
+    const userData = {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      isActive: user.isActive,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
+
     return {
       accessToken,
       refreshToken,
       tokenType: 'Bearer',
       expiresIn: 900, // 15 minutes in seconds
+      user: userData,
     };
   }
 
@@ -144,5 +154,12 @@ export class AppService {
     }
 
     return user;
+  }
+
+  async getUsers(): Promise<User[]> {
+    return this.userRepository.find({
+      where: { isActive: true },
+      select: ['id', 'username', 'email', 'createdAt', 'updatedAt'],
+    });
   }
 }

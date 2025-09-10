@@ -4,13 +4,13 @@ import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useRegister } from "../../hooks/useRegister";
-import { PAGE_PATH_DASHBOARD } from "../../constants/AuthPathUrl";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { FiUserPlus } from "react-icons/fi";
 import { useState } from "react";
+import PATHS from "@/routes/paths";
 
 const registerSchema = z.object({
   email: z.string().email("Email inválido"),
@@ -41,7 +41,7 @@ export function RegisterView() {
     try {
       await registerUser(data);
       toast.success("Cadastro realizado com sucesso! Bem-vindo!");
-      void navigate(PAGE_PATH_DASHBOARD);
+      void navigate(PATHS.dashboard.index);
     } catch {
       toast.error("Falha no cadastro. Tente novamente.");
     } finally {
