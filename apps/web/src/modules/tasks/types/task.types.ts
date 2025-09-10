@@ -90,7 +90,6 @@ export interface TaskQueryDto {
   status?: TaskStatus;
   priority?: TaskPriority;
   assignedToMe?: boolean;
-  createdByMe?: boolean;
 }
 
 export interface CreateCommentDto {

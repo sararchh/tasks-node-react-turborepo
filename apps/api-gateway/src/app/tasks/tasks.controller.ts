@@ -56,8 +56,14 @@ export class TasksController {
   @Get()
   @ApiOperation({ summary: 'Get all tasks with pagination' })
   @ApiResponse({ status: 200, description: 'Tasks retrieved successfully' })
-  findAll(@Query(new ValidationPipe()) query: TaskQueryDto) {
-    return this.tasksClient.send('tasks.findAll', query);
+  findAll(
+    @Query(new ValidationPipe()) query: TaskQueryDto,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    return this.tasksClient.send('tasks.findAll', {
+      query,
+      user: req.user,
+    });
   }
 
   @Get(':id')

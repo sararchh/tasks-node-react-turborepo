@@ -102,8 +102,19 @@ export class TasksService {
     return this.findOne(savedTask.id);
   }
 
-  async findAll(query: TaskQueryDto): Promise<PaginatedTaskResponseDto> {
-    const { page = 1, size = 10, status, priority, assignedTo, search } = query;
+  async findAll(
+    query: TaskQueryDto,
+    userId?: string,
+  ): Promise<PaginatedTaskResponseDto> {
+    const {
+      page = 1,
+      size = 10,
+      status,
+      priority,
+      assignedTo,
+      search,
+      assignedToMe,
+    } = query;
     const skip = (page - 1) * size;
 
     const queryBuilder = this.taskRepository
@@ -122,6 +133,10 @@ export class TasksService {
 
     if (assignedTo) {
       queryBuilder.andWhere('assignments.userId = :assignedTo', { assignedTo });
+    }
+
+    if (assignedToMe && userId) {
+      queryBuilder.andWhere('assignments.userId = :userId', { userId });
     }
 
     if (search) {

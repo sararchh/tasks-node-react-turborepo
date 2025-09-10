@@ -29,9 +29,10 @@ export class TasksController {
 
   @MessagePattern('tasks.findAll')
   async findAll(
-    @Payload() query: TaskQueryDto,
+    @Payload() data: { query: TaskQueryDto; user: UserPayload },
   ): Promise<PaginatedTaskResponseDto> {
-    return this.tasksService.findAll(query);
+    const { query, user } = data;
+    return this.tasksService.findAll(query, user.sub);
   }
 
   @MessagePattern('tasks.findOne')

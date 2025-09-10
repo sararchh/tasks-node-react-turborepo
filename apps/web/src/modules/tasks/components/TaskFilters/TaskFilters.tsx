@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { X, Search } from "lucide-react";
+import { X, Search, User } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ interface TaskFiltersData {
   search?: string;
   status?: TaskStatus | "";
   priority?: TaskPriority | "";
+  assignedToMe?: boolean;
 }
 
 interface TaskFiltersProps {
@@ -28,6 +29,7 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
       search: "",
       status: "",
       priority: "",
+      assignedToMe: false,
     },
   });
 
@@ -39,8 +41,11 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
   const handleFilterChange = React.useCallback(
     (data: TaskFiltersData) => {
       const cleanData = Object.entries(data).reduce((acc, [key, value]) => {
-        if (value !== "" && value !== false && value !== undefined) {
-          acc[key as keyof TaskFiltersData] = value;
+        if (typeof value === 'boolean' && value === true) {
+          (acc as any)[key] = value;
+        }
+        else if (typeof value === 'string' && value !== "" && value !== undefined) {
+          (acc as any)[key] = value;
         }
         return acc;
       }, {} as TaskFiltersData);
@@ -125,6 +130,22 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
                 </option>
               ))}
             </Select>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <input
+              type="checkbox"
+              {...register("assignedToMe")}
+              id="assignedToMe"
+              className="h-5 w-5 rounded border-2 border-gray-300 text-blue-600 focus:ring-blue-500 focus:ring-2 focus:ring-offset-2"
+            />
+            <Label
+              htmlFor="assignedToMe"
+              className="flex items-center text-sm font-medium text-gray-700 cursor-pointer"
+            >
+              <User size={16} className="mr-2 text-blue-600" />
+              Minhas Tarefas
+            </Label>
           </div>
         </div>
       </form>

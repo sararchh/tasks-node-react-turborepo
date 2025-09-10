@@ -70,7 +70,6 @@ export const taskFiltersSchema = z.object({
   status: z.nativeEnum(TaskStatus).optional(),
   priority: z.nativeEnum(TaskPriority).optional(),
   assignedToMe: z.boolean().optional(),
-  createdByMe: z.boolean().optional(),
   page: z.number().min(1).optional().default(1),
   size: z.number().min(1).max(100).optional().default(10),
 });
