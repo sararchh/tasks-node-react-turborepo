@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { Plus, AlertCircle, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -17,18 +17,28 @@ import { Task, TaskQueryDto, TaskStatus } from "../types/task.types";
 
 export const TasksDashboard: React.FC = () => {
   const [filters, setFilters] = useState<TaskQueryDto>({});
+  const [debouncedFilters, setDebouncedFilters] = useState<TaskQueryDto>({});
   const [showTaskForm, setShowTaskForm] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const { user, logout } = useAuth();
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedFilters(filters);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [filters]);
+
   const {
     data: tasksData,
     isLoading,
     error,
+    isFetching,
   } = useGetTasks({
-    ...filters,
+    ...debouncedFilters,
     page: 1,
     size: 100,
   });
@@ -40,56 +50,66 @@ export const TasksDashboard: React.FC = () => {
   const { updateTask, isLoading: updateLoading } = useUpdateTask();
   const { deleteTask, isLoading: deleteLoading } = useDeleteTask();
 
-  const handleCreateTask = (data: any) => {
-    createTask(data, {
-      onSuccess: () => {
-        setShowTaskForm(false);
-      },
-    });
-  };
-
-  const handleUpdateTask = (data: any) => {
-    if (!editingTask) return;
-
-    updateTask(
-      { id: editingTask.id, data },
-      {
+  const handleCreateTask = useCallback(
+    (data: any) => {
+      createTask(data, {
         onSuccess: () => {
-          setEditingTask(null);
-          setSelectedTask(null);
-        },
-      },
-    );
-  };
-
-  const handleDeleteTask = (taskId: string) => {
-    if (window.confirm("Tem certeza que deseja excluir esta tarefa?")) {
-      deleteTask(taskId, {
-        onSuccess: () => {
-          setSelectedTask(null);
+          setShowTaskForm(false);
         },
       });
-    }
-  };
+    },
+    [createTask],
+  );
 
-  const handleEditTask = (task: Task) => {
+  const handleUpdateTask = useCallback(
+    (data: any) => {
+      if (!editingTask) return;
+
+      updateTask(
+        { id: editingTask.id, data },
+        {
+          onSuccess: () => {
+            setEditingTask(null);
+            setSelectedTask(null);
+          },
+        },
+      );
+    },
+    [editingTask, updateTask],
+  );
+
+  const handleDeleteTask = useCallback(
+    (taskId: string) => {
+      if (window.confirm("Tem certeza que deseja excluir esta tarefa?")) {
+        deleteTask(taskId, {
+          onSuccess: () => {
+            setSelectedTask(null);
+          },
+        });
+      }
+    },
+    [deleteTask],
+  );
+
+  const handleEditTask = useCallback((task: Task) => {
     setEditingTask(task);
     setSelectedTask(null);
-  };
+  }, []);
 
-  const handleViewTask = (task: Task) => {
+  const handleViewTask = useCallback((task: Task) => {
     setSelectedTask(task);
-  };
+  }, []);
 
-  const handleFiltersChange = (newFilters: any) => {
+  const handleFiltersChange = useCallback((newFilters: any) => {
     setFilters(newFilters);
-  };
+  }, []);
 
-  const handleTaskMove = (taskId: string, newStatus: TaskStatus) => {
-    updateTask(
-      { id: taskId, data: { status: newStatus } },
-    );
-  };
+  const handleTaskMove = useCallback(
+    (taskId: string, newStatus: TaskStatus) => {
+      updateTask({ id: taskId, data: { status: newStatus } });
+    },
+    [updateTask],
+  );
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -97,7 +117,7 @@ export const TasksDashboard: React.FC = () => {
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-semibold text-gray-900">
+              <h1 className="text-xl !font-semibold text-gray-900">
                 iGame Tasks
               </h1>
             </div>
@@ -155,8 +175,7 @@ export const TasksDashboard: React.FC = () => {
                 loading={isLoading}
               />
             </div>
-
-            {error ? (
+            {error && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-8 text-center">
                 <AlertCircle className="text-red-500 mx-auto mb-4" size={48} />
                 <h3 className="text-red-800 font-semibold text-lg mb-2">
@@ -167,7 +186,9 @@ export const TasksDashboard: React.FC = () => {
                   alguns instantes.
                 </p>
               </div>
-            ) : isLoading ? (
+            )}
+
+            {isFetching ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {Array.from({ length: 4 }).map((_, i) => (
                   <div

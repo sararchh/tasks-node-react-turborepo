@@ -100,7 +100,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
                   onClick={() => onEdit(task)}
                   className="bg-white/80 border border-slate-200 hover:bg-white hover:border-slate-300 transition-colors"
                 >
-                  <Edit className="w-4 h-4 mr-2" />
+                  <Edit className="w-4 h-4 !mr-2" />
                   Editar
                 </Button>
                 <Button
@@ -109,7 +109,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
                   onClick={() => onDelete(task.id)}
                   className="bg-white/80 border border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 transition-colors"
                 >
-                  <Trash2 className="w-4 h-4 mr-2" />
+                  <Trash2 className="w-4 h-4 !mr-2" />
                   Excluir
                 </Button>
               </div>
@@ -121,7 +121,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
               <Card className="border-slate-200 shadow-sm !mb-4 !p-4">
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center text-lg text-slate-900">
-                    <FileText className="w-5 h-5 mr-2 text-slate-600" />
+                    <FileText className="w-5 h-5 !mr-2 text-slate-600" />
                     Descrição
                   </CardTitle>
                 </CardHeader>
@@ -138,7 +138,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
               <Card className="border-slate-200 shadow-sm !mb-4 !p-4">
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center text-lg text-slate-900">
-                    <Users className="w-5 h-5 mr-2 text-slate-600" />
+                    <Users className="w-5 h-5 !mr-2 text-slate-600" />
                     Usuários Atribuídos ({task.assignments.length})
                   </CardTitle>
                 </CardHeader>
@@ -169,7 +169,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
               <Card className="border-slate-200 shadow-sm !mb-4 !p-4">
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center text-lg text-slate-900">
-                    <History className="w-5 h-5 mr-2 text-slate-600" />
+                    <History className="w-5 h-5 !mr-2 text-slate-600" />
                     Histórico de Atividades ({task.history.length})
                   </CardTitle>
                 </CardHeader>
@@ -209,7 +209,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center text-lg text-slate-900">
-                    <MessageCircle className="w-5 h-5 mr-2 text-slate-600" />
+                    <MessageCircle className="w-5 h-5 !mr-2 text-slate-600" />
                     Comentários ({task.comments.length})
                   </CardTitle>
                   <Button
@@ -218,7 +218,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
                     disabled={addCommentLoading}
                     className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
                   >
-                    <MessageCircle className="w-4 h-4 mr-2" />
+                    <MessageCircle className="w-4 h-4 !mr-2" />
                     {showCommentForm ? 'Cancelar' : 'Comentar'}
                   </Button>
                 </div>
