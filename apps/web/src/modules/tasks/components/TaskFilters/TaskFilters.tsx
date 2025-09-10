@@ -4,6 +4,7 @@ import { X, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { TaskPriority, TaskStatus } from "../../types/task.types";
 import { PRIORITY_CONFIG, STATUS_CONFIG } from "../../utils/task-configs";
 
@@ -79,10 +80,11 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
 
       <form className="space-y-6">
         <div className="relative">
-          <label className="block text-sm font-medium text-gray-700 mb-3">
+          <Label className="block text-sm font-medium text-gray-700 mb-3">
             🔍 Pesquisar Tarefas
-          </label>
+          </Label>
           <div className="relative group">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <Input
               {...register("search")}
               placeholder="Digite o título, descrição ou responsável..."
@@ -93,71 +95,37 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
 
         <div className="grid grid-cols-1 !mt-4 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className="space-y-2">
-            <label className="flex items-center text-sm font-medium text-gray-700">
+            <Label className="flex items-center text-sm font-medium text-gray-700">
               📊 Status
-            </label>
-            <div className="relative">
-              <select
-                {...register("status")}
-                className="w-full h-12 px-4 border-2 border-gray-200 !rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 bg-white shadow-sm transition-all duration-200 text-gray-900 appearance-none cursor-pointer"
-              >
-                <option value="">Todos os status</option>
-                {Object.entries(STATUS_CONFIG).map(([key, config]) => (
-                  <option key={key} value={key}>
-                    {config.label}
-                  </option>
-                ))}
-              </select>
-              <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
-                <svg
-                  className="w-5 h-5 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </div>
-            </div>
+            </Label>
+            <Select
+              {...register("status")}
+              className="w-full h-12 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 bg-white shadow-sm transition-all duration-200 text-gray-900"
+            >
+              <option value="">Todos os status</option>
+              {Object.entries(STATUS_CONFIG).map(([key, config]) => (
+                <option key={key} value={key}>
+                  {config.label}
+                </option>
+              ))}
+            </Select>
           </div>
 
           <div className="space-y-2">
-            <label className="flex items-center text-sm font-medium text-gray-700">
+            <Label className="flex items-center text-sm font-medium text-gray-700">
               🚨 Prioridade
-            </label>
-            <div className="relative">
-              <select
-                {...register("priority")}
-                className="w-full h-12 px-4 border-2 border-gray-200 !rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 bg-white shadow-sm transition-all duration-200 text-gray-900 appearance-none cursor-pointer"
-              >
-                <option value="">Todas as prioridades</option>
-                {Object.entries(PRIORITY_CONFIG).map(([key, config]) => (
-                  <option key={key} value={key}>
-                    {config.label}
-                  </option>
-                ))}
-              </select>
-              <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
-                <svg
-                  className="w-5 h-5 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </div>
-            </div>
+            </Label>
+            <Select
+              {...register("priority")}
+              className="w-full h-12 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 bg-white shadow-sm transition-all duration-200 text-gray-900"
+            >
+              <option value="">Todas as prioridades</option>
+              {Object.entries(PRIORITY_CONFIG).map(([key, config]) => (
+                <option key={key} value={key}>
+                  {config.label}
+                </option>
+              ))}
+            </Select>
           </div>
         </div>
       </form>
