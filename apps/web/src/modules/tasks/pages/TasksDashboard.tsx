@@ -98,7 +98,6 @@ export const TasksDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200 !px-4">
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -130,10 +129,8 @@ export const TasksDashboard: React.FC = () => {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="flex-1 h-full">
         <div className=" sm:px-6 !m-4">
-          {/* Page Header */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center !mb-4 space-y-4 sm:space-y-0">
             <div>
               <h2 className="text-2xl font-bold text-gray-900">
@@ -156,9 +153,7 @@ export const TasksDashboard: React.FC = () => {
             </Button>
           </div>
 
-          {/* Content */}
           <div className="space-y-6">
-            {/* Filters */}
             <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
               <TaskFilters
                 onFiltersChange={handleFiltersChange}
@@ -166,7 +161,6 @@ export const TasksDashboard: React.FC = () => {
               />
             </div>
 
-            {/* Kanban Board */}
             {error ? (
               <div className="bg-red-50 border border-red-200 rounded-lg p-8 text-center">
                 <AlertCircle className="text-red-500 mx-auto mb-4" size={48} />
@@ -209,7 +203,6 @@ export const TasksDashboard: React.FC = () => {
         </div>
       </main>
 
-      {/* Modals */}
       <TaskForm
         open={showTaskForm}
         onOpenChange={setShowTaskForm}

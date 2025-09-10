@@ -13,7 +13,6 @@ export const getTasksService = new ApiService<
   handler: async (req: GetTasksServiceRequest = {}) => {
     const { data } = await api.get('/tasks', { params: req });
 
-    // Transform backend response to match our expected format
     return {
       tasks: data.data || [],
       total: data.meta?.total || 0,

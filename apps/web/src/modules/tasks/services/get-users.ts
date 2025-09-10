@@ -11,7 +11,6 @@ export const getUsersService = new ApiService<
   cacheKey: 'getUsers',
   handler: async () => {
     const { data } = await api.get('/users');
-    // If backend wraps users in data object, unwrap it
     return data.data || data;
   },
 });

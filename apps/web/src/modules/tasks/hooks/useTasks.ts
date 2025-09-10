@@ -20,7 +20,6 @@ export function useTasks() {
   };
 }
 
-// Re-export individual hooks for direct usage
 export { useGetTasks } from './useGetTasks';
 export { useGetTask } from './useGetTask';
 export { useCreateTask } from './useCreateTask';

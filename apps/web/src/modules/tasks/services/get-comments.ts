@@ -15,7 +15,6 @@ export const getCommentsService = new ApiService<
       params: { page, size }
     });
 
-    // Transform backend response to match our expected format
     return {
       comments: data.data || [],
       total: data.meta?.total || 0,

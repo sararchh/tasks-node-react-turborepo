@@ -12,7 +12,6 @@ export const getTaskService = new ApiService<
   cacheKey: 'getTask',
   handler: async (id: GetTaskServiceRequest) => {
     const { data } = await api.get(`/tasks/${id}`);
-    // If backend wraps single task in data object, unwrap it
     return data.data || data;
   },
 });
