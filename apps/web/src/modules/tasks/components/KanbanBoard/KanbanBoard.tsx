@@ -9,10 +9,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+
 import { TaskStatus } from "../../types/task.types";
 import { KanbanColumn } from "./KanbanColumn";
 import { TaskCard } from "./TaskCard";
@@ -43,7 +40,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
     }),
   );
 
-  const columns = getAllStatusColumns().map(column => ({
+  const columns = getAllStatusColumns().map((column) => ({
     ...column,
     tasks: tasks.filter((task) => task.status === column.id),
   }));
@@ -91,39 +88,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
       onDragOver={handleDragOver}
     >
       <div className="p-6 h-full">
-        <div className="hidden lg:grid lg:grid-cols-4 gap-6 h-full">
-          {columns.map((column) => (
-            <KanbanColumn
-              key={column.id}
-              id={column.id}
-              title={column.title}
-              color={column.color}
-              headerColor={column.headerColor}
-              tasks={column.tasks}
-              onTaskEdit={onTaskEdit}
-              onTaskDelete={onTaskDelete}
-              onTaskView={onTaskView}
-            />
-          ))}
-        </div>
-
-        <div className="hidden md:grid md:grid-cols-2 lg:hidden gap-6 h-full">
-          {columns.map((column) => (
-            <KanbanColumn
-              key={column.id}
-              id={column.id}
-              title={column.title}
-              color={column.color}
-              headerColor={column.headerColor}
-              tasks={column.tasks}
-              onTaskEdit={onTaskEdit}
-              onTaskDelete={onTaskDelete}
-              onTaskView={onTaskView}
-            />
-          ))}
-        </div>
-
-        <div className="md:hidden space-y-6 h-full">
+        <div className="lg:grid lg:grid-cols-4 gap-6 h-full  md:grid md:grid-cols-2 space-y-6 ">
           {columns.map((column) => (
             <KanbanColumn
               key={column.id}
