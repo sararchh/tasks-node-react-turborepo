@@ -46,7 +46,7 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
         p-4 rounded-t-lg border-b ${headerColor}
         flex items-center justify-between
       `}>
-        <h3 className="font-semibold text-gray-900 text-lg">{title}</h3>
+        <h3 className="!font-semibold text-gray-900 text-lg">{title}</h3>
         <div className="flex items-center gap-2">
           <span className="bg-white px-3 py-1 rounded-full text-sm font-medium text-gray-700 shadow-sm">
             {tasks.length}

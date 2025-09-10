@@ -92,7 +92,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
       <div className="p-4">
         {/* Header */}
         <div className="flex items-start justify-between mb-3">
-          <h4 className="font-medium text-gray-900 text-sm leading-tight line-clamp-2 flex-1 mr-2">
+          <h4 className="!font-semibold text-gray-900 text-sm leading-tight line-clamp-2 flex-1 mr-2">
             {task.title}
           </h4>
           <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
