@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { Edit, Trash2, Clock, User, MessageCircle, Calendar, AlertCircle, CheckCircle, PlayCircle, FileText, Users, History } from 'lucide-react';
+import { Edit, Trash2, Clock, User, MessageCircle, Calendar, AlertCircle, CheckCircle, PlayCircle, FileText, Users, History, Plus, ArrowUp, ArrowDown, RotateCcw } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -65,6 +65,48 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
   };
 
   if (!task) return null;
+
+  const getHistoryIcon = (action: string) => {
+    switch (action) {
+      case 'CREATED':
+        return <Plus className="w-4 h-4 text-green-600" />;
+      case 'STATUS_CHANGED':
+        return <RotateCcw className="w-4 h-4 text-blue-600" />;
+      case 'PRIORITY_CHANGED':
+        return <ArrowUp className="w-4 h-4 text-orange-600" />;
+      case 'UPDATED':
+        return <Edit className="w-4 h-4 text-purple-600" />;
+      case 'ASSIGNED':
+        return <User className="w-4 h-4 text-indigo-600" />;
+      case 'UNASSIGNED':
+        return <User className="w-4 h-4 text-gray-600" />;
+      case 'COMMENT_ADDED':
+        return <MessageCircle className="w-4 h-4 text-teal-600" />;
+      default:
+        return <Clock className="w-4 h-4 text-slate-600" />;
+    }
+  };
+
+  const getHistoryBgColor = (action: string) => {
+    switch (action) {
+      case 'CREATED':
+        return 'from-green-100 to-green-200';
+      case 'STATUS_CHANGED':
+        return 'from-blue-100 to-blue-200';
+      case 'PRIORITY_CHANGED':
+        return 'from-orange-100 to-orange-200';
+      case 'UPDATED':
+        return 'from-purple-100 to-purple-200';
+      case 'ASSIGNED':
+        return 'from-indigo-100 to-indigo-200';
+      case 'UNASSIGNED':
+        return 'from-gray-100 to-gray-200';
+      case 'COMMENT_ADDED':
+        return 'from-teal-100 to-teal-200';
+      default:
+        return 'from-slate-100 to-slate-200';
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -180,8 +222,8 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
                         key={entry.id}
                         className="flex items-start gap-4 p-4 bg-white rounded-lg border border-slate-100 hover:border-slate-200 transition-colors"
                       >
-                        <div className="w-8 h-8 bg-gradient-to-r from-slate-100 to-slate-200 rounded-full flex items-center justify-center flex-shrink-0">
-                          <Clock className="w-4 h-4 text-slate-600" />
+                        <div className={`w-8 h-8 bg-gradient-to-r ${getHistoryBgColor(entry.action)} rounded-full flex items-center justify-center flex-shrink-0 shadow-sm`}>
+                          {getHistoryIcon(entry.action)}
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium text-slate-900 leading-relaxed">{entry.description}</p>
@@ -189,7 +231,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
                             <span className="text-xs font-medium text-slate-700">{entry.changedByName}</span>
                             <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
                             <span className="text-xs text-slate-500">
-                              {format(new Date(entry.changedAt), 'dd/MM/yyyy HH:mm', { locale: ptBR })}
+                              {format(new Date(entry.createdAt), 'dd/MM/yyyy HH:mm', { locale: ptBR })}
                             </span>
                           </div>
                         </div>

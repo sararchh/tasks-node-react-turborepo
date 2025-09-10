@@ -37,7 +37,7 @@ export interface TaskHistory {
   newValues: Record<string, any>;
   changedBy: string;
   changedByName: string;
-  changedAt: string;
+  createdAt: string;
   taskId: string;
 }
 

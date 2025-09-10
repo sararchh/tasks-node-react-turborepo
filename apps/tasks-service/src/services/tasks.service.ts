@@ -121,7 +121,9 @@ export class TasksService {
       .createQueryBuilder('task')
       .leftJoinAndSelect('task.assignments', 'assignments')
       .leftJoinAndSelect('task.comments', 'comments')
-      .orderBy('task.createdAt', 'DESC');
+      .leftJoinAndSelect('task.history', 'history')
+      .orderBy('task.createdAt', 'DESC')
+      .addOrderBy('history.createdAt', 'DESC');
 
     if (status) {
       queryBuilder.andWhere('task.status = :status', { status });
