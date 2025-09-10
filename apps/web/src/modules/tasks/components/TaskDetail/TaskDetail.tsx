@@ -89,45 +89,48 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
 
   if (!task) return null;
 
-  const getHistoryIcon = (action: string) => {
+  const getHistoryConfig = (action: string) => {
     switch (action) {
       case "CREATED":
-        return <Plus className="w-4 h-4 text-green-600" />;
+        return {
+          icon: <Plus className="w-4 h-4 text-green-600" />,
+          bgColor: "from-green-100 to-green-200"
+        };
       case "STATUS_CHANGED":
-        return <RotateCcw className="w-4 h-4 text-blue-600" />;
+        return {
+          icon: <RotateCcw className="w-4 h-4 text-blue-600" />,
+          bgColor: "from-blue-100 to-blue-200"
+        };
       case "PRIORITY_CHANGED":
-        return <ArrowUp className="w-4 h-4 text-orange-600" />;
+        return {
+          icon: <ArrowUp className="w-4 h-4 text-orange-600" />,
+          bgColor: "from-orange-100 to-orange-200"
+        };
       case "UPDATED":
-        return <Edit className="w-4 h-4 text-purple-600" />;
+        return {
+          icon: <Edit className="w-4 h-4 text-purple-600" />,
+          bgColor: "from-purple-100 to-purple-200"
+        };
       case "ASSIGNED":
-        return <User className="w-4 h-4 text-indigo-600" />;
+        return {
+          icon: <User className="w-4 h-4 text-indigo-600" />,
+          bgColor: "from-indigo-100 to-indigo-200"
+        };
       case "UNASSIGNED":
-        return <User className="w-4 h-4 text-gray-600" />;
+        return {
+          icon: <User className="w-4 h-4 text-gray-600" />,
+          bgColor: "from-gray-100 to-gray-200"
+        };
       case "COMMENT_ADDED":
-        return <MessageCircle className="w-4 h-4 text-teal-600" />;
+        return {
+          icon: <MessageCircle className="w-4 h-4 text-teal-600" />,
+          bgColor: "from-teal-100 to-teal-200"
+        };
       default:
-        return <Clock className="w-4 h-4 text-slate-600" />;
-    }
-  };
-
-  const getHistoryBgColor = (action: string) => {
-    switch (action) {
-      case "CREATED":
-        return "from-green-100 to-green-200";
-      case "STATUS_CHANGED":
-        return "from-blue-100 to-blue-200";
-      case "PRIORITY_CHANGED":
-        return "from-orange-100 to-orange-200";
-      case "UPDATED":
-        return "from-purple-100 to-purple-200";
-      case "ASSIGNED":
-        return "from-indigo-100 to-indigo-200";
-      case "UNASSIGNED":
-        return "from-gray-100 to-gray-200";
-      case "COMMENT_ADDED":
-        return "from-teal-100 to-teal-200";
-      default:
-        return "from-slate-100 to-slate-200";
+        return {
+          icon: <Clock className="w-4 h-4 text-slate-600" />,
+          bgColor: "from-slate-100 to-slate-200"
+        };
     }
   };
 
@@ -422,16 +425,18 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
                           {task.history
                             .slice()
                             .reverse()
-                            .map((entry, index) => (
-                              <div
-                                key={entry.id}
-                                className="flex items-start gap-4 p-4 bg-white rounded-lg border border-slate-100 hover:border-slate-200 transition-colors shadow-sm"
-                              >
+                            .map((entry, index) => {
+                              const historyConfig = getHistoryConfig(entry.action);
+                              return (
                                 <div
-                                  className={`w-8 h-8 bg-gradient-to-r ${getHistoryBgColor(entry.action)} rounded-full flex items-center justify-center flex-shrink-0 shadow-sm`}
+                                  key={entry.id}
+                                  className="flex items-start gap-4 p-4 bg-white rounded-lg border border-slate-100 hover:border-slate-200 transition-colors shadow-sm"
                                 >
-                                  {getHistoryIcon(entry.action)}
-                                </div>
+                                  <div
+                                    className={`w-8 h-8 bg-gradient-to-r ${historyConfig.bgColor} rounded-full flex items-center justify-center flex-shrink-0 shadow-sm`}
+                                  >
+                                    {historyConfig.icon}
+                                  </div>
                                 <div className="flex-1 min-w-0">
                                   <p className="text-sm font-medium text-slate-900 leading-relaxed">
                                     {entry.description}
@@ -456,7 +461,8 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
                                   </div>
                                 )}
                               </div>
-                            ))}
+                            );
+                            })}
                         </div>
                       ) : (
                         <div className="text-center py-12 bg-white rounded-lg border border-slate-200">
