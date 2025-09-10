@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Task, TaskPriority, TaskStatus } from "../../types/task.types";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { getPriorityBadgeColor, PRIORITY_CONFIG } from "../../utils/task-configs";
 
 interface TaskCardProps {
   task: Task;
@@ -43,32 +44,6 @@ export const TaskCard: React.FC<TaskCardProps> = ({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-  };
-
-  const getPriorityColor = (priority: TaskPriority) => {
-    switch (priority) {
-      case TaskPriority.URGENT:
-        return "bg-red-100 text-red-800 border-red-200";
-      case TaskPriority.HIGH:
-        return "bg-orange-100 text-orange-800 border-orange-200";
-      case TaskPriority.MEDIUM:
-        return "bg-yellow-100 text-yellow-800 border-yellow-200";
-      case TaskPriority.LOW:
-        return "bg-green-100 text-green-800 border-green-200";
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
-    }
-  };
-
-  const getPriorityIcon = (priority: TaskPriority) => {
-    switch (priority) {
-      case TaskPriority.URGENT:
-        return <AlertTriangle size={14} />;
-      case TaskPriority.HIGH:
-        return <Clock size={14} />;
-      default:
-        return null;
-    }
   };
 
   const isOverdue = task.deadline && new Date(task.deadline) < new Date();
@@ -127,10 +102,10 @@ export const TaskCard: React.FC<TaskCardProps> = ({
         )}
 
         <div className="flex items-center gap-2 mb-3">
-          <Badge className={`text-xs px-2 py-1 ${getPriorityColor(task.priority)}`}>
+          <Badge className={`text-xs px-2 py-1 ${getPriorityBadgeColor(task.priority)}`}>
             <div className="flex items-center gap-1">
-              {getPriorityIcon(task.priority)}
-              {task.priority}
+              {React.createElement(PRIORITY_CONFIG[task.priority].icon, { size: 14 })}
+              {PRIORITY_CONFIG[task.priority].label}
             </div>
           </Badge>
         </div>

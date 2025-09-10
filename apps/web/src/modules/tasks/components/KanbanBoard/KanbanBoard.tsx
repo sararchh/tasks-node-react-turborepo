@@ -16,6 +16,7 @@ import {
 import { TaskStatus } from "../../types/task.types";
 import { KanbanColumn } from "./KanbanColumn";
 import { TaskCard } from "./TaskCard";
+import { getAllStatusColumns, STATUS_CONFIG } from "../../utils/task-configs";
 
 interface KanbanBoardProps {
   tasks: any[];
@@ -42,36 +43,10 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
     }),
   );
 
-  const columns = [
-    {
-      id: TaskStatus.TODO,
-      title: "A Fazer",
-      color: "bg-gray-100 border-gray-300",
-      headerColor: "bg-gray-50",
-      tasks: tasks.filter((task) => task.status === TaskStatus.TODO),
-    },
-    {
-      id: TaskStatus.IN_PROGRESS,
-      title: "Em Andamento",
-      color: "bg-blue-100 border-blue-300",
-      headerColor: "bg-blue-50",
-      tasks: tasks.filter((task) => task.status === TaskStatus.IN_PROGRESS),
-    },
-    {
-      id: TaskStatus.REVIEW,
-      title: "Revisão",
-      color: "bg-yellow-100 border-yellow-300",
-      headerColor: "bg-yellow-50",
-      tasks: tasks.filter((task) => task.status === TaskStatus.REVIEW),
-    },
-    {
-      id: TaskStatus.DONE,
-      title: "Concluído",
-      color: "bg-green-100 border-green-300",
-      headerColor: "bg-green-50",
-      tasks: tasks.filter((task) => task.status === TaskStatus.DONE),
-    },
-  ];
+  const columns = getAllStatusColumns().map(column => ({
+    ...column,
+    tasks: tasks.filter((task) => task.status === column.id),
+  }));
 
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
@@ -102,7 +77,6 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
     const taskId = active.id as string;
     const overId = over.id as string;
 
-    // If dropping on a column
     if (Object.values(TaskStatus).includes(overId as TaskStatus)) {
       const newStatus = overId as TaskStatus;
       onTaskMove(taskId, newStatus);

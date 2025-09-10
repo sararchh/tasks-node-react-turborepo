@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { TaskPriority, TaskStatus } from "../../types/task.types";
+import { PRIORITY_CONFIG, STATUS_CONFIG } from "../../utils/task-configs";
 
 interface TaskFiltersData {
   search?: string;
@@ -21,7 +22,7 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
   onFiltersChange,
   loading = false,
 }) => {
-  const { register, handleSubmit, reset, watch } = useForm<TaskFiltersData>({
+  const { register, reset, watch } = useForm<TaskFiltersData>({
     defaultValues: {
       search: "",
       status: "",
@@ -29,29 +30,13 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
     },
   });
 
-  const handleFilterSubmit = (data: TaskFiltersData) => {
-    // Remove empty values
-    const cleanData = Object.entries(data).reduce((acc, [key, value]) => {
-      if (value !== "" && value !== false && value !== undefined) {
-        acc[key as keyof TaskFiltersData] = value;
-      }
-      return acc;
-    }, {} as TaskFiltersData);
-
-    onFiltersChange(cleanData);
-  };
-
   const handleClearFilters = () => {
     reset();
     onFiltersChange({});
   };
 
-  // Watch for changes and auto-submit
-  const watchedValues = watch();
-
   const handleFilterChange = React.useCallback(
     (data: TaskFiltersData) => {
-      // Remove empty values
       const cleanData = Object.entries(data).reduce((acc, [key, value]) => {
         if (value !== "" && value !== false && value !== undefined) {
           acc[key as keyof TaskFiltersData] = value;
@@ -117,10 +102,11 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
                 className="w-full h-12 px-4 border-2 border-gray-200 !rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 bg-white shadow-sm transition-all duration-200 text-gray-900 appearance-none cursor-pointer"
               >
                 <option value="">Todos os status</option>
-                <option value={TaskStatus.TODO}>⏳ A Fazer</option>
-                <option value={TaskStatus.IN_PROGRESS}>🔄 Em Progresso</option>
-                <option value={TaskStatus.REVIEW}>👀 Em Revisão</option>
-                <option value={TaskStatus.DONE}>✅ Concluído</option>
+                {Object.entries(STATUS_CONFIG).map(([key, config]) => (
+                  <option key={key} value={key}>
+                    {config.label}
+                  </option>
+                ))}
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
                 <svg
@@ -150,10 +136,11 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
                 className="w-full h-12 px-4 border-2 border-gray-200 !rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 bg-white shadow-sm transition-all duration-200 text-gray-900 appearance-none cursor-pointer"
               >
                 <option value="">Todas as prioridades</option>
-                <option value={TaskPriority.LOW}>🟢 Baixa</option>
-                <option value={TaskPriority.MEDIUM}>🟡 Média</option>
-                <option value={TaskPriority.HIGH}>🟠 Alta</option>
-                <option value={TaskPriority.URGENT}>🔴 Urgente</option>
+                {Object.entries(PRIORITY_CONFIG).map(([key, config]) => (
+                  <option key={key} value={key}>
+                    {config.label}
+                  </option>
+                ))}
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
                 <svg

@@ -11,6 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Task, TaskPriority, TaskStatus } from '../../types/task.types';
 import { useGetComments, useAddComment } from '../../hooks/useTasks';
+import { PRIORITY_CONFIG, STATUS_CONFIG } from '../../utils/task-configs';
 
 interface TaskDetailProps {
   open: boolean;
@@ -23,60 +24,6 @@ interface TaskDetailProps {
 interface CommentForm {
   content: string;
 }
-
-const priorityConfig = {
-  [TaskPriority.LOW]: {
-    variant: 'secondary' as const,
-    label: 'Baixa',
-    icon: AlertCircle,
-    color: 'text-slate-600 bg-slate-50 border-slate-200'
-  },
-  [TaskPriority.MEDIUM]: {
-    variant: 'default' as const,
-    label: 'Média',
-    icon: Clock,
-    color: 'text-amber-600 bg-amber-50 border-amber-200'
-  },
-  [TaskPriority.HIGH]: {
-    variant: 'warning' as const,
-    label: 'Alta',
-    icon: AlertCircle,
-    color: 'text-orange-600 bg-orange-50 border-orange-200'
-  },
-  [TaskPriority.URGENT]: {
-    variant: 'danger' as const,
-    label: 'Urgente',
-    icon: AlertCircle,
-    color: 'text-red-600 bg-red-50 border-red-200'
-  },
-};
-
-const statusConfig = {
-  [TaskStatus.TODO]: {
-    variant: 'secondary' as const,
-    label: 'A Fazer',
-    icon: FileText,
-    color: 'text-slate-600 bg-slate-50 border-slate-200'
-  },
-  [TaskStatus.IN_PROGRESS]: {
-    variant: 'primary' as const,
-    label: 'Em Progresso',
-    icon: PlayCircle,
-    color: 'text-blue-600 bg-blue-50 border-blue-200'
-  },
-  [TaskStatus.REVIEW]: {
-    variant: 'warning' as const,
-    label: 'Em Revisão',
-    icon: Clock,
-    color: 'text-amber-600 bg-amber-50 border-amber-200'
-  },
-  [TaskStatus.DONE]: {
-    variant: 'success' as const,
-    label: 'Concluído',
-    icon: CheckCircle,
-    color: 'text-emerald-600 bg-emerald-50 border-emerald-200'
-  },
-};
 
 export const TaskDetail: React.FC<TaskDetailProps> = ({
   open,
@@ -130,13 +77,13 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
                   {task.title}
                 </DialogTitle>
                 <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary" className={`${statusConfig[task.status].color} border-0 font-medium px-3 py-1`}>
-                    {React.createElement(statusConfig[task.status].icon, { className: "w-3.5 h-3.5 mr-1.5" })}
-                    {statusConfig[task.status].label}
+                  <Badge variant="secondary" className={`${STATUS_CONFIG[task.status].color} border-0 font-medium px-3 py-1`}>
+                    {React.createElement(STATUS_CONFIG[task.status].icon, { className: "w-3.5 h-3.5 mr-1.5" })}
+                    {STATUS_CONFIG[task.status].label}
                   </Badge>
-                  <Badge variant="secondary" className={`${priorityConfig[task.priority].color} border-0 font-medium px-3 py-1`}>
-                    {React.createElement(priorityConfig[task.priority].icon, { className: "w-3.5 h-3.5 mr-1.5" })}
-                    {priorityConfig[task.priority].label}
+                  <Badge variant="secondary" className={`${PRIORITY_CONFIG[task.priority].color} border-0 font-medium px-3 py-1`}>
+                    {React.createElement(PRIORITY_CONFIG[task.priority].icon, { className: "w-3.5 h-3.5 mr-1.5" })}
+                    {PRIORITY_CONFIG[task.priority].label}
                   </Badge>
                   {task.deadline && (
                     <Badge variant="secondary" className="bg-white/80 border-slate-200 text-slate-700 px-3 py-1">

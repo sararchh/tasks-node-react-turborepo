@@ -88,11 +88,6 @@ export const TasksDashboard: React.FC = () => {
   const handleTaskMove = (taskId: string, newStatus: TaskStatus) => {
     updateTask(
       { id: taskId, data: { status: newStatus } },
-      {
-        onSuccess: () => {
-          // Task moved successfully
-        },
-      },
     );
   };
 

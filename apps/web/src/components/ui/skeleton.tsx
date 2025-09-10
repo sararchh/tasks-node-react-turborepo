@@ -22,7 +22,6 @@ Skeleton.displayName = "Skeleton";
 
 export { Skeleton };
 
-// Skeleton patterns for different components
 export const TaskCardSkeleton = () => (
   <div className="border rounded-lg p-4 space-y-3">
     <div className="flex justify-between items-start">

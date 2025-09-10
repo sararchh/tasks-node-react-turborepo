@@ -39,7 +39,6 @@ export function LoginView() {
     try {
       const result = await login(data);
       if (result) {
-        // Atualizar o contexto com os dados do usuário
         setUser(result.user);
         toast.success("Login realizado com sucesso!");
         void navigate(PATHS.dashboard.index);

@@ -9,6 +9,8 @@ export * from './types/task.types';
 export * from './hooks/useTasks';
 export * from './hooks/useCreateTask';
 export * from './hooks/useGetTasks';
+
+export * from './utils/task-configs';
 export * from './hooks/useGetTask';
 export * from './hooks/useUpdateTask';
 export * from './hooks/useDeleteTask';

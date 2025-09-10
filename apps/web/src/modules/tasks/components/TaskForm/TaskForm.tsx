@@ -27,6 +27,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TaskPriority, TaskStatus, Task } from "../../types/task.types";
 import { useGetUsers } from "../../hooks/useGetUsers";
+import { PRIORITY_CONFIG, STATUS_CONFIG } from "../../utils/task-configs";
 
 interface TaskFormData {
   title: string;
@@ -90,12 +91,10 @@ export const TaskForm: React.FC<TaskFormProps> = ({
   }, [task, isEditing, reset]);
 
   const handleFormSubmit = (data: TaskFormData) => {
-    // Remove status field if creating new task
     if (!isEditing) {
       delete data.status;
     }
 
-    // Add assignedUsers information based on selected IDs
     if (data.assignedUserIds && data.assignedUserIds.length > 0) {
       data.assignedUsers = data.assignedUserIds.map((userId) => {
         const user = users.find((u) => u.id === userId);
@@ -274,12 +273,11 @@ export const TaskForm: React.FC<TaskFormProps> = ({
                           {...register("priority")}
                           className="border-slate-200"
                         >
-                          <option value={TaskPriority.LOW}>🔵 Baixa</option>
-                          <option value={TaskPriority.MEDIUM}>🟡 Média</option>
-                          <option value={TaskPriority.HIGH}>🟠 Alta</option>
-                          <option value={TaskPriority.URGENT}>
-                            🔴 Urgente
-                          </option>
+                          {Object.entries(PRIORITY_CONFIG).map(([key, config]) => (
+                            <option key={key} value={key}>
+                              {config.label}
+                            </option>
+                          ))}
                         </Select>
                       </div>
 
@@ -297,16 +295,11 @@ export const TaskForm: React.FC<TaskFormProps> = ({
                             {...register("status")}
                             className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
                           >
-                            <option value={TaskStatus.TODO}>📋 A Fazer</option>
-                            <option value={TaskStatus.IN_PROGRESS}>
-                              ⚡ Em Progresso
-                            </option>
-                            <option value={TaskStatus.REVIEW}>
-                              👀 Em Revisão
-                            </option>
-                            <option value={TaskStatus.DONE}>
-                              ✅ Concluído
-                            </option>
+                            {Object.entries(STATUS_CONFIG).map(([key, config]) => (
+                              <option key={key} value={key}>
+                                {config.label}
+                              </option>
+                            ))}
                           </Select>
                         </div>
                       )}
