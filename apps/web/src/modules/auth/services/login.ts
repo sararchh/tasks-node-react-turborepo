@@ -1,6 +1,6 @@
 import { ApiService } from '@/shared/core';
 import { api } from '@/shared/infra';
-import { LoginRequest, AuthResponse } from '@igame/types';
+import { LoginRequest, AuthResponse } from '../types';
 
 export type LoginServiceRequest = LoginRequest;
 
