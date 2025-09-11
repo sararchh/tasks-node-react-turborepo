@@ -7,7 +7,6 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
-import { firstValueFrom } from 'rxjs';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 
 @ApiTags('Users')
@@ -40,7 +39,7 @@ export class UsersController {
     },
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  async getUsers() {
-    return await firstValueFrom(this.authClient.send('auth.getUsers', {}));
+  getUsers() {
+    return this.authClient.send('auth.getUsers', {});
   }
 }
