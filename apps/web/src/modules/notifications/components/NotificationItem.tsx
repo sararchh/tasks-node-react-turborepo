@@ -12,33 +12,18 @@ interface NotificationItemProps {
   onDelete?: (id: string) => void;
 }
 
-const getNotificationIcon = (type: Notification['type']) => {
+const getNotificationDetails = (type: Notification['type']) => {
   switch (type) {
     case 'TASK_CREATED':
-      return <Plus className="h-4 w-4 text-blue-500" />;
+      return { icon: <Plus className="h-4 w-4 text-blue-500" />, label: 'Criada' };
     case 'TASK_UPDATED':
-      return <CheckCircle className="h-4 w-4 text-green-500" />;
+      return { icon: <CheckCircle className="h-4 w-4 text-green-500" />, label: 'Atualizada' };
     case 'TASK_ASSIGNED':
-      return <Clock className="h-4 w-4 text-orange-500" />;
+      return { icon: <Clock className="h-4 w-4 text-orange-500" />, label: 'Atribuída' };
     case 'COMMENT_NEW':
-      return <MessageSquare className="h-4 w-4 text-purple-500" />;
+      return { icon: <MessageSquare className="h-4 w-4 text-purple-500" />, label: 'Novo Comentário' };
     default:
-      return <Clock className="h-4 w-4 text-gray-500" />;
-  }
-};
-
-const getNotificationTypeLabel = (type: Notification['type']) => {
-  switch (type) {
-    case 'TASK_CREATED':
-      return 'Tarefa Criada';
-    case 'TASK_UPDATED':
-      return 'Tarefa Atualizada';
-    case 'TASK_ASSIGNED':
-      return 'Tarefa Atribuída';
-    case 'COMMENT_NEW':
-      return 'Novo Comentário';
-    default:
-      return 'Notificação';
+      return { icon: <Clock className="h-4 w-4 text-gray-500" />, label: 'Notificação' };
   }
 };
 
@@ -49,9 +34,11 @@ export const NotificationItem = ({
 }: NotificationItemProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
+  const { icon, label } = getNotificationDetails(notification.type);
+
   const handleMarkAsRead = async () => {
     if (notification.status === 'READ') return;
-    
+
     setIsLoading(true);
     try {
       await onMarkAsRead?.(notification.id);
@@ -71,41 +58,41 @@ export const NotificationItem = ({
 
   return (
     <div
-      className={`flex items-start space-x-3 p-4 border-b border-gray-200 hover:bg-gray-50 transition-colors ${
-        notification.status === 'UNREAD' ? 'bg-blue-50' : ''
+      className={`flex items-start !space-x-4 !p-2 !border-b !border-gray-200 hover:!bg-gray-100 !transition-all !duration-200 !rounded-lg !shadow-sm ${
+        notification.status === 'UNREAD' ? '!bg-blue-50 !border-l-4 !border-l-blue-500' : ''
       }`}
     >
-      <div className="flex-shrink-0 mt-1">
-        {getNotificationIcon(notification.type)}
+      <div className="!flex-shrink-0 !mt-1 !p-2 !rounded-full !bg-gray-100 !border !border-gray-200">
+        {icon}
       </div>
-      
+
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <h4 className="text-sm font-medium text-gray-900">
+          <div className="flex items-center !space-x-2 justify-between w-full">
+            <h4 className="!text-sm !font-semibold !text-gray-900">
               {notification.title}
             </h4>
             <Badge variant="secondary" size="sm">
-              {getNotificationTypeLabel(notification.type)}
+              {label}
             </Badge>
           </div>
-          
+
           {notification.status === 'UNREAD' && (
-            <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0" />
+            <div className="!w-2 !h-2 !bg-blue-500 !rounded-full !flex-shrink-0 !animate-pulse" />
           )}
         </div>
-        
-        <p className="text-sm text-gray-600 mt-1">
+
+        <p className="!text-sm !text-gray-700 !mt-2 !leading-relaxed">
           {notification.message}
         </p>
-        
+
         <div className="flex items-center justify-between mt-2">
-          <span className="text-xs text-gray-500">
+          <span className="!text-xs !text-gray-500 !font-medium">
             {format(new Date(notification.createdAt), "dd 'de' MMM 'às' HH:mm", {
               locale: ptBR,
             })}
           </span>
-          
+
           <div className="flex items-center space-x-2">
             {notification.status === 'UNREAD' && (
               <Button
@@ -113,18 +100,18 @@ export const NotificationItem = ({
                 size="sm"
                 onClick={handleMarkAsRead}
                 isLoading={isLoading}
-                className="text-xs"
+                className="!text-xs"
               >
                 Marcar como lida
               </Button>
             )}
-            
+
             <Button
               variant="ghost"
               size="sm"
               onClick={handleDelete}
               isLoading={isLoading}
-              className="text-xs text-red-600 hover:text-red-700"
+              className="!text-xs !text-red-600 hover:!text-red-700"
             >
               Excluir
             </Button>

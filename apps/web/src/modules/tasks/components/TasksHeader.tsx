@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NotificationBadge, NotificationPanel, useNotificationWebSocket } from "@/modules/notifications";
+import { toast } from "react-toastify";
 
 interface TasksHeaderProps {
   user: {
@@ -18,13 +19,13 @@ export const TasksHeader: React.FC<TasksHeaderProps> = ({ user, onLogout }) => {
   const { unreadCount, getUnreadCount } = useNotificationWebSocket({
     userId: user?.id,
     onTaskCreated: (data) => {
-      console.log('Nova tarefa criada:', data);
+      toast.info(`Nova tarefa: ${data.title}`);
     },
     onTaskUpdated: (data) => {
-      console.log('Tarefa atualizada:', data);
+      toast.info(`Tarefa atualizada: ${data.title}`);
     },
     onCommentNew: (data) => {
-      console.log('Novo comentário:', data);
+      toast.info(`Novo comentário em: ${data.taskTitle}`);
     },
   });
 

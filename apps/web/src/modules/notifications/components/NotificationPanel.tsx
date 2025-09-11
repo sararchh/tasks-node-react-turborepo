@@ -28,10 +28,10 @@ export const NotificationPanel = ({
 
   const loadNotifications = useCallback(async () => {
     if (!userId) return;
-    
+
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const result = await notificationsApi.getUserNotifications(userId);
       setNotifications(result);
@@ -94,7 +94,7 @@ export const NotificationPanel = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black bg-opacity-50" onClick={onClose}>
+    <div className="fixed inset-0 z-50" onClick={onClose}>
       <div
         className="fixed right-0 top-0 h-full w-96 bg-white shadow-lg transform transition-transform"
         onClick={(e) => e.stopPropagation()}
@@ -126,20 +126,26 @@ export const NotificationPanel = ({
           </div>
         </div>
 
-        <div className="h-full overflow-y-auto pb-16">
-          {isLoading ? (
+        <div className="h-full overflow-y-auto pb-16 flex flex-col gap-5 !p-2">
+          {isLoading && (
             <div className="flex items-center justify-center p-8">
               <div className="text-sm text-gray-500">Carregando notificações...</div>
             </div>
-          ) : error ? (
+          )}
+
+          {error && !isLoading && (
             <div className="flex items-center justify-center p-8">
               <div className="text-sm text-red-600">{error}</div>
             </div>
-          ) : notifications.length === 0 ? (
+          )}
+
+          {notifications.length === 0 && !isLoading && !error && (
             <div className="flex items-center justify-center p-8">
               <div className="text-sm text-gray-500">Nenhuma notificação encontrada</div>
             </div>
-          ) : (
+          )}
+
+          {notifications.length > 0 && (
             notifications.map((notification) => (
               <NotificationItem
                 key={notification.id}
@@ -150,6 +156,7 @@ export const NotificationPanel = ({
             ))
           )}
         </div>
+
       </div>
     </div>
   );
