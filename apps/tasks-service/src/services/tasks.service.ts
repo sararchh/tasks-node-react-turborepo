@@ -277,11 +277,22 @@ export class TasksService {
       );
     }
 
+    // Buscar tarefa atualizada para obter usuários atribuídos
+    const updatedTask = await this.taskRepository.findOne({
+      where: { id },
+      relations: ['assignments'],
+    });
+
+    const currentAssignedUserIds =
+      updatedTask?.assignments?.map((assignment) => assignment.userId) || [];
+
     this.eventService.publishTaskEvent({
       eventType: 'task.updated',
       taskId: id,
       userId,
       data: {
+        title: updatedTask?.title,
+        assignedUserIds: currentAssignedUserIds,
         updatedFields,
         previousValues,
         updatedAt: new Date(),

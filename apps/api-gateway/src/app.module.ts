@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { AuthController } from './app/auth/auth.controller';
 import { UsersController } from './app/users/users.controller';
 import { TasksController } from './app/tasks/tasks.controller';
+import { NotificationsController } from './app/notifications/notifications.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
@@ -70,6 +71,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     AuthController,
     UsersController,
     TasksController,
+    NotificationsController,
   ],
   providers: [
     AppService,
