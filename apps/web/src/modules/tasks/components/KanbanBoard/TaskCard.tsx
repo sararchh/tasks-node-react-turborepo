@@ -16,6 +16,7 @@ import { Task, TaskPriority, TaskStatus } from "../../types/task.types";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { getPriorityBadgeColor, PRIORITY_CONFIG } from "../../utils/task-configs";
+import { useAuth } from "@/modules/auth/hooks/useAuth";
 
 interface TaskCardProps {
   task: Task;
@@ -32,6 +33,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
   onView,
   isDragging = false,
 }) => {
+  const { user } = useAuth();
   const {
     attributes,
     listeners,
@@ -84,10 +86,17 @@ export const TaskCard: React.FC<TaskCardProps> = ({
             <Button
               variant="ghost"
               size="sm"
-              className="h-6 w-6 p-0 hover:bg-red-100 hover:text-red-600"
+              disabled={!user?.id || task.createdBy !== user.id}
+              className={`h-6 w-6 p-0 ${
+                !user?.id || task.createdBy !== user.id
+                  ? "text-gray-300 cursor-not-allowed"
+                  : "hover:bg-red-100 hover:text-red-600"
+              }`}
               onClick={(e) => {
                 e.stopPropagation();
-                onDelete(task.id);
+                if (user?.id && task.createdBy === user.id) {
+                  onDelete(task.id);
+                }
               }}
             >
               <Trash2 size={12} />

@@ -20,6 +20,7 @@ import {
   ArrowDown,
   RotateCcw,
 } from "lucide-react";
+import { useAuth } from "@/modules/auth/hooks/useAuth";
 import {
   Dialog,
   DialogContent,
@@ -55,6 +56,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
   onEdit,
   onDelete,
 }) => {
+  const { user } = useAuth();
   const [showCommentForm, setShowCommentForm] = useState(false);
   const [commentsPage, setCommentsPage] = useState(1);
 
@@ -190,7 +192,12 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({
                   size="sm"
                   variant="ghost"
                   onClick={() => onDelete(task.id)}
-                  className="bg-white/80 border border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 transition-colors"
+                  disabled={!user?.id || task.createdBy !== user.id}
+                  className={`bg-white/80 border transition-colors ${
+                    !user?.id || task.createdBy !== user.id
+                      ? "border-gray-200 text-gray-400 cursor-not-allowed"
+                      : "border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300"
+                  }`}
                 >
                   <Trash2 className="w-4 h-4 !mr-2" />
                   Excluir

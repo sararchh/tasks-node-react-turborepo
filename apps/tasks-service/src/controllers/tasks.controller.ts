@@ -61,7 +61,7 @@ export class TasksController {
   @MessagePattern('tasks.remove')
   async remove(
     @Payload() data: { id: string; user: UserPayload },
-  ): Promise<void> {
+  ): Promise<{ message: string; id: string }> {
     const { id, user } = data;
     return this.tasksService.remove(id, user.sub);
   }
