@@ -33,7 +33,6 @@ export class EventHandlerService {
       const { taskId, userId, data } = event;
       const assignedUserIds = data.assignedUserIds || [];
 
-      // Criar notificações para os usuários atribuídos
       if (assignedUserIds.length > 0) {
         const notifications =
           await this.notificationsService.createTaskNotification(
@@ -50,7 +49,6 @@ export class EventHandlerService {
             },
           );
 
-        // Enviar notificações via WebSocket
         notifications.forEach((notification) => {
           this.notificationsGateway.sendNotificationToUser(
             notification.userId,
@@ -58,7 +56,6 @@ export class EventHandlerService {
           );
         });
 
-        // Enviar evento específico task:created
         this.notificationsGateway.sendTaskCreated(assignedUserIds, {
           taskId,
           title: data.title,
@@ -103,7 +100,6 @@ export class EventHandlerService {
             },
           );
 
-        // Enviar notificações via WebSocket
         notifications.forEach((notification) => {
           this.notificationsGateway.sendNotificationToUser(
             notification.userId,
@@ -111,7 +107,6 @@ export class EventHandlerService {
           );
         });
 
-        // Enviar evento específico task:updated
         this.notificationsGateway.sendTaskUpdated(affectedUserIds, {
           taskId,
           title: data.title,
@@ -151,7 +146,6 @@ export class EventHandlerService {
             },
           );
 
-        // Enviar notificações via WebSocket
         notifications.forEach((notification) => {
           this.notificationsGateway.sendNotificationToUser(
             notification.userId,
@@ -159,7 +153,6 @@ export class EventHandlerService {
           );
         });
 
-        // Enviar evento específico comment:new
         this.notificationsGateway.sendCommentNew(participantUserIds, {
           taskId,
           taskTitle: data.taskTitle,

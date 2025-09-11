@@ -36,7 +36,6 @@ export class NotificationsGateway
   handleDisconnect(client: Socket) {
     this.logger.log(`Client disconnected: ${client.id}`);
 
-    // Remove o socket do mapa de usuários
     for (const [userId, socket] of this.userSockets.entries()) {
       if (socket.id === client.id) {
         this.userSockets.delete(userId);
@@ -119,7 +118,6 @@ export class NotificationsGateway
     }
   }
 
-  // Métodos para enviar notificações aos usuários
   sendNotificationToUser(userId: string, notification: any) {
     this.server.to(`user:${userId}`).emit('task:notification', notification);
   }

@@ -12,7 +12,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
-    // Rate limiting
     ThrottlerModule.forRoot({
       throttlers: [
         {
@@ -32,13 +31,11 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         },
       ],
     }),
-    // JWT Module
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET || 'secret',
       signOptions: { expiresIn: '15m' },
     }),
-    // Microservices clients
     ClientsModule.register([
       {
         name: 'AUTH_SERVICE',

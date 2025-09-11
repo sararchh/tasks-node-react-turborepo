@@ -33,7 +33,6 @@ export class EventController {
       const { taskId, userId, data } = event;
       const assignedUserIds = data.assignedUserIds || [];
 
-      // Criar notificações para os usuários atribuídos
       if (assignedUserIds.length > 0) {
         const notifications =
           await this.notificationsService.createTaskNotification(
@@ -50,7 +49,6 @@ export class EventController {
             },
           );
 
-        // Enviar notificações via WebSocket
         notifications.forEach((notification) => {
           this.notificationsGateway.sendNotificationToUser(
             notification.userId,
@@ -58,7 +56,6 @@ export class EventController {
           );
         });
 
-        // Enviar evento específico task:created
         this.notificationsGateway.sendTaskCreated(assignedUserIds, {
           taskId,
           title: data.title,
@@ -114,7 +111,6 @@ export class EventController {
         this.logger.log(`Created ${notifications.length} notifications`);
         this.logger.log(`Notifications: ${JSON.stringify(notifications)}`);
 
-        // Enviar notificações via WebSocket
         notifications.forEach((notification) => {
           this.notificationsGateway.sendNotificationToUser(
             notification.userId,
@@ -122,7 +118,6 @@ export class EventController {
           );
         });
 
-        // Enviar evento específico task:updated
         this.notificationsGateway.sendTaskUpdated(affectedUserIds, {
           taskId,
           title: data.title,
@@ -162,7 +157,6 @@ export class EventController {
             },
           );
 
-        // Enviar notificações via WebSocket
         notifications.forEach((notification) => {
           this.notificationsGateway.sendNotificationToUser(
             notification.userId,
@@ -170,7 +164,6 @@ export class EventController {
           );
         });
 
-        // Enviar evento específico comment:new
         this.notificationsGateway.sendCommentNew(participantUserIds, {
           taskId,
           taskTitle: data.taskTitle,

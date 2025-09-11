@@ -100,7 +100,6 @@ export class NotificationsController {
     }
   }
 
-  // Message Patterns para comunicação via microserviços
   @MessagePattern('notifications.findAll')
   async findAllPattern(data: any) {
     return this.notificationsService.findAll(data);

@@ -19,15 +19,12 @@ export const TasksHeader: React.FC<TasksHeaderProps> = ({ user, onLogout }) => {
     userId: user?.id,
     onTaskCreated: (data) => {
       console.log('Nova tarefa criada:', data);
-      // Aqui você pode mostrar uma notificação toast
     },
     onTaskUpdated: (data) => {
       console.log('Tarefa atualizada:', data);
-      // Aqui você pode mostrar uma notificação toast
     },
     onCommentNew: (data) => {
       console.log('Novo comentário:', data);
-      // Aqui você pode mostrar uma notificação toast
     },
   });
 

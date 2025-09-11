@@ -277,7 +277,6 @@ export class TasksService {
       );
     }
 
-    // Buscar tarefa atualizada para obter usuários atribuídos
     const updatedTask = await this.taskRepository.findOne({
       where: { id },
       relations: ['assignments'],

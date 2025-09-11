@@ -6,13 +6,10 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // CORS
   app.enableCors();
 
-  // Global prefix
   app.setGlobalPrefix('api');
 
-  // Global validation pipe
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -21,7 +18,6 @@ async function bootstrap() {
     }),
   );
 
-  // Swagger configuration
   const config = new DocumentBuilder()
     .setTitle('iGame API')
     .setDescription('iGame API Gateway - Microservices Architecture')
