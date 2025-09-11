@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { CheckCircle, Clock, MessageSquare, Plus } from 'lucide-react';
@@ -34,9 +34,9 @@ export const NotificationItem = ({
 }: NotificationItemProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const { icon, label } = getNotificationDetails(notification.type);
+  const { icon, label } = useMemo(() => getNotificationDetails(notification.type), [notification.type]);
 
-  const handleMarkAsRead = async () => {
+  const handleMarkAsRead = useCallback(async () => {
     if (notification.status === 'READ') return;
 
     setIsLoading(true);
@@ -45,16 +45,16 @@ export const NotificationItem = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [notification.status, notification.id, onMarkAsRead]);
 
-  const handleDelete = async () => {
+  const handleDelete = useCallback(async () => {
     setIsLoading(true);
     try {
       await onDelete?.(notification.id);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [notification.id, onDelete]);
 
   return (
     <div

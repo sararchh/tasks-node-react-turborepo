@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { FiUserPlus } from "react-icons/fi";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import PATHS from "@/routes/paths";
 
 const registerSchema = z.object({
@@ -36,7 +36,7 @@ export function RegisterView() {
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = async (data: RegisterForm) => {
+  const onSubmit = useCallback(async (data: RegisterForm) => {
     setLoading(true);
     try {
       await registerUser(data);
@@ -47,7 +47,7 @@ export function RegisterView() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [registerUser, navigate]);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center p-12 sm:px-6 lg:px-8 items-center">

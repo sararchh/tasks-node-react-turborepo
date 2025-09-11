@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import {
   Edit,
@@ -54,7 +54,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
   task,
   isLoading = false,
 }) => {
-  const isEditing = !!task;
+  const isEditing = useMemo(() => !!task, [task]);
   const { data: users = [] } = useGetUsers();
 
   const {
@@ -75,7 +75,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({
     },
   });
 
-  const selectedUserIds = watch("assignedUserIds") || [];
+  const selectedUserIds = React.useMemo(() => {
+    return watch("assignedUserIds") || [];
+  }, [watch("assignedUserIds")]);
 
   React.useEffect(() => {
     if (task && isEditing) {
@@ -90,41 +92,47 @@ export const TaskForm: React.FC<TaskFormProps> = ({
     }
   }, [task, isEditing, reset]);
 
-  const handleFormSubmit = (data: TaskFormData) => {
-    if (!isEditing) {
-      delete data.status;
-    }
+  const handleFormSubmit = useCallback(
+    (data: TaskFormData) => {
+      if (!isEditing) {
+        delete data.status;
+      }
 
-    if (data.assignedUserIds && data.assignedUserIds.length > 0) {
-      data.assignedUsers = data.assignedUserIds.map((userId) => {
-        const user = users.find((u) => u.id === userId);
-        return {
-          id: userId,
-          username: user?.username || user?.email || "Unknown User",
-        };
-      });
-    }
+      if (data.assignedUserIds && data.assignedUserIds.length > 0) {
+        data.assignedUsers = data.assignedUserIds.map((userId) => {
+          const user = users.find((u) => u.id === userId);
+          return {
+            id: userId,
+            username: user?.username || user?.email || "Unknown User",
+          };
+        });
+      }
 
-    onSubmit(data);
-    if (!isEditing) {
-      reset();
-    }
-  };
+      onSubmit(data);
+      if (!isEditing) {
+        reset();
+      }
+    },
+    [isEditing, users, onSubmit, reset],
+  );
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     onOpenChange(false);
     if (!isEditing) {
       reset();
     }
-  };
+  }, [isEditing, onOpenChange, reset]);
 
-  const toggleUserAssignment = (userId: string) => {
-    const currentIds = selectedUserIds;
-    const newIds = currentIds.includes(userId)
-      ? currentIds.filter((id) => id !== userId)
-      : [...currentIds, userId];
-    setValue("assignedUserIds", newIds);
-  };
+  const toggleUserAssignment = useCallback(
+    (userId: string) => {
+      const currentIds = selectedUserIds;
+      const newIds = currentIds.includes(userId)
+        ? currentIds.filter((id) => id !== userId)
+        : [...currentIds, userId];
+      setValue("assignedUserIds", newIds);
+    },
+    [selectedUserIds, setValue],
+  );
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
@@ -273,11 +281,13 @@ export const TaskForm: React.FC<TaskFormProps> = ({
                           {...register("priority")}
                           className="border-slate-200"
                         >
-                          {Object.entries(PRIORITY_CONFIG).map(([key, config]) => (
-                            <option key={key} value={key}>
-                              {config.label}
-                            </option>
-                          ))}
+                          {Object.entries(PRIORITY_CONFIG).map(
+                            ([key, config]) => (
+                              <option key={key} value={key}>
+                                {config.label}
+                              </option>
+                            ),
+                          )}
                         </Select>
                       </div>
 
@@ -295,11 +305,13 @@ export const TaskForm: React.FC<TaskFormProps> = ({
                             {...register("status")}
                             className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
                           >
-                            {Object.entries(STATUS_CONFIG).map(([key, config]) => (
-                              <option key={key} value={key}>
-                                {config.label}
-                              </option>
-                            ))}
+                            {Object.entries(STATUS_CONFIG).map(
+                              ([key, config]) => (
+                                <option key={key} value={key}>
+                                  {config.label}
+                                </option>
+                              ),
+                            )}
                           </Select>
                         </div>
                       )}

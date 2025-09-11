@@ -48,7 +48,7 @@ export const TasksMain: React.FC<TasksMainProps> = ({ user }) => {
   });
 
   const tasks = useMemo(() => tasksData?.tasks || [], [tasksData?.tasks]);
-  const total = tasksData?.total || 0;
+  const total = useMemo(() => tasksData?.total || 0, [tasksData?.total]);
 
   const { createTask, isLoading: createLoading } = useCreateTask();
   const { updateTask, isLoading: updateLoading } = useUpdateTask();
@@ -115,6 +115,11 @@ export const TasksMain: React.FC<TasksMainProps> = ({ user }) => {
     [updateTask],
   );
 
+  const tasksText = useMemo(() => {
+    if (total === 0) return "Nenhuma tarefa encontrada";
+    return `${total} tarefa${total !== 1 ? "s" : ""} encontrada${total !== 1 ? "s" : ""}`;
+  }, [total]);
+
   return (
     <main className="flex-1 h-full">
       <div className=" sm:px-6 !m-4">
@@ -124,9 +129,7 @@ export const TasksMain: React.FC<TasksMainProps> = ({ user }) => {
               Gerenciamento de Tarefas
             </h2>
             <p className="text-gray-600 mt-1">
-              {total > 0
-                ? `${total} tarefa${total !== 1 ? "s" : ""} encontrada${total !== 1 ? "s" : ""}`
-                : "Nenhuma tarefa encontrada"}
+              {tasksText}
             </p>
           </div>
 

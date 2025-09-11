@@ -1,12 +1,13 @@
 import { X, CheckCheck } from 'lucide-react';
 import { NotificationItem } from './NotificationItem';
 import { Button } from '../../../components/ui/button';
-import { 
+import {
   useGetUserNotifications,
   useMarkAsRead,
   useMarkAllAsRead,
   useDeleteNotification
 } from '../hooks';
+import { useCallback, useMemo } from 'react';
 
 interface NotificationPanelProps {
   userId: string;
@@ -25,44 +26,47 @@ export const NotificationPanel = ({
   onMarkAllAsRead,
   onRefresh,
 }: NotificationPanelProps) => {
-  const { 
-    data: notifications = [], 
-    isLoading, 
-    error 
+  const {
+    data: notifications = [],
+    isLoading,
+    error
   } = useGetUserNotifications(userId);
 
   const { markAsRead } = useMarkAsRead();
   const { markAllAsRead } = useMarkAllAsRead();
   const { deleteNotification } = useDeleteNotification();
 
-  const handleMarkAsRead = async (notificationId: string) => {
+  const handleMarkAsRead = useCallback(async (notificationId: string) => {
     try {
       await markAsRead({ notificationId });
       onMarkAsRead?.(notificationId);
     } catch (err) {
       console.error('Error marking notification as read:', err);
     }
-  };
+  }, [markAsRead, onMarkAsRead]);
 
-  const handleMarkAllAsRead = async () => {
+  const handleMarkAllAsRead = useCallback(async () => {
     try {
       await markAllAsRead({ userId });
       onMarkAllAsRead?.();
     } catch (err) {
       console.error('Error marking all notifications as read:', err);
     }
-  };
+  }, [markAllAsRead, userId, onMarkAllAsRead]);
 
-  const handleDelete = async (notificationId: string) => {
+  const handleDelete = useCallback(async (notificationId: string) => {
     try {
       await deleteNotification({ notificationId });
       onRefresh?.();
     } catch (err) {
       console.error('Error deleting notification:', err);
     }
-  };
+  }, [deleteNotification, onRefresh]);
 
-  const unreadCount = notifications.filter(n => n.status === 'UNREAD').length;
+  const unreadCount = useMemo(() =>
+    notifications.filter(n => n.status === 'UNREAD').length,
+    [notifications]
+  );
 
   if (!isOpen) return null;
 

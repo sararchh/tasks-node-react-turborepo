@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { X, Search, User } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -33,12 +33,12 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
     },
   });
 
-  const handleClearFilters = () => {
+  const handleClearFilters = useCallback(() => {
     reset();
     onFiltersChange({});
-  };
+  }, [reset, onFiltersChange]);
 
-  const handleFilterChange = React.useCallback(
+  const handleFilterChange = useCallback(
     (data: TaskFiltersData) => {
       const cleanData = Object.entries(data).reduce((acc, [key, value]) => {
         if (typeof value === 'boolean' && value === true) {
@@ -53,6 +53,22 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
       onFiltersChange(cleanData);
     },
     [onFiltersChange],
+  );
+
+  const statusOptions = useMemo(() =>
+    Object.entries(STATUS_CONFIG).map(([key, config]) => ({
+      value: key,
+      label: config.label
+    })),
+    []
+  );
+
+  const priorityOptions = useMemo(() =>
+    Object.entries(PRIORITY_CONFIG).map(([key, config]) => ({
+      value: key,
+      label: config.label
+    })),
+    []
   );
 
   React.useEffect(() => {
@@ -107,9 +123,9 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
               className="w-full h-12 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 bg-white shadow-sm transition-all duration-200 text-gray-900"
             >
               <option value="">Todos os status</option>
-              {Object.entries(STATUS_CONFIG).map(([key, config]) => (
-                <option key={key} value={key}>
-                  {config.label}
+              {statusOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
                 </option>
               ))}
             </Select>
@@ -124,9 +140,9 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
               className="w-full h-12 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 bg-white shadow-sm transition-all duration-200 text-gray-900"
             >
               <option value="">Todas as prioridades</option>
-              {Object.entries(PRIORITY_CONFIG).map(([key, config]) => (
-                <option key={key} value={key}>
-                  {config.label}
+              {priorityOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
                 </option>
               ))}
             </Select>

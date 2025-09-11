@@ -10,7 +10,6 @@ export function useCreateTask() {
     mutationFn: async (data: CreateTaskServiceRequest) => createTaskService.execute(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
-      toast.success('Tarefa criada com sucesso!');
     },
     onError: (error: any) => {
       const errorMessage = error?.response?.data?.message || 'Erro ao criar tarefa';
