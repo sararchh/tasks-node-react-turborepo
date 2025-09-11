@@ -6,6 +6,7 @@ import {
 } from '@dnd-kit/sortable';
 import { TaskStatus } from '../../types/task.types';
 import { TaskCard } from './TaskCard';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface KanbanColumnProps {
   id: TaskStatus;
@@ -16,6 +17,7 @@ interface KanbanColumnProps {
   onTaskEdit: (task: any) => void;
   onTaskDelete: (taskId: string) => void;
   onTaskView: (task: any) => void;
+  isFetching?: boolean;
 }
 
 export const KanbanColumn: React.FC<KanbanColumnProps> = ({
@@ -27,6 +29,7 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
   onTaskEdit,
   onTaskDelete,
   onTaskView,
+  isFetching = false,
 }) => {
   const { setNodeRef, isOver } = useDroppable({
     id,
@@ -55,7 +58,14 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
 
       <div className="flex-1 !p-2 !space-y-3  overflow-y-auto max-h-[400px] lg:max-h-[500px]">
         <SortableContext items={tasks.map(t => t.id)} strategy={verticalListSortingStrategy}>
-          {tasks.length === 0 ? (
+          {isFetching ? (
+
+            <>
+              <Skeleton className="h-24 w-full rounded-lg" />
+              <Skeleton className="h-24 w-full rounded-lg" />
+              <Skeleton className="h-24 w-full rounded-lg" />
+            </>
+          ) : tasks.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-gray-500">
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3">
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">

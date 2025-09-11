@@ -168,16 +168,8 @@ export const TasksMain: React.FC<TasksMainProps> = ({ user }) => {
               onTaskEdit={handleEditTask}
               onTaskDelete={handleDeleteTask}
               onTaskView={handleViewTask}
+              isFetching={isFetching}
             />
-
-            {isFetching && (
-              <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
-                <div className="flex flex-col items-center space-y-4">
-                  <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
-                  <p className="text-sm text-gray-600 font-medium">Atualizando tarefas...</p>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>

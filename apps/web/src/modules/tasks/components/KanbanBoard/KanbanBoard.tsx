@@ -21,6 +21,7 @@ interface KanbanBoardProps {
   onTaskEdit: (task: any) => void;
   onTaskDelete: (taskId: string) => void;
   onTaskView: (task: any) => void;
+  isFetching?: boolean;
 }
 
 export const KanbanBoard: React.FC<KanbanBoardProps> = ({
@@ -29,6 +30,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
   onTaskEdit,
   onTaskDelete,
   onTaskView,
+  isFetching = false,
 }) => {
   const [activeTask, setActiveTask] = React.useState<any>(null);
 
@@ -100,6 +102,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
               onTaskEdit={onTaskEdit}
               onTaskDelete={onTaskDelete}
               onTaskView={onTaskView}
+              isFetching={isFetching}
             />
           ))}
         </div>
