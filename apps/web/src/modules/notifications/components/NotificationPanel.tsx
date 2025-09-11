@@ -1,9 +1,12 @@
-import { useState, useEffect, useCallback } from 'react';
 import { X, CheckCheck } from 'lucide-react';
-import { Notification } from '../types';
 import { NotificationItem } from './NotificationItem';
 import { Button } from '../../../components/ui/button';
-import { notificationsApi } from '../services/notifications-api';
+import { 
+  useGetUserNotifications,
+  useMarkAsRead,
+  useMarkAllAsRead,
+  useDeleteNotification
+} from '../hooks';
 
 interface NotificationPanelProps {
   userId: string;
@@ -22,43 +25,19 @@ export const NotificationPanel = ({
   onMarkAllAsRead,
   onRefresh,
 }: NotificationPanelProps) => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { 
+    data: notifications = [], 
+    isLoading, 
+    error 
+  } = useGetUserNotifications(userId);
 
-  const loadNotifications = useCallback(async () => {
-    if (!userId) return;
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const result = await notificationsApi.getUserNotifications(userId);
-      setNotifications(result);
-    } catch (err) {
-      setError('Erro ao carregar notificações');
-      console.error('Error loading notifications:', err);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [userId]);
-
-  useEffect(() => {
-    if (isOpen && userId) {
-      loadNotifications();
-    }
-  }, [isOpen, userId, loadNotifications]);
+  const { markAsRead } = useMarkAsRead();
+  const { markAllAsRead } = useMarkAllAsRead();
+  const { deleteNotification } = useDeleteNotification();
 
   const handleMarkAsRead = async (notificationId: string) => {
     try {
-      await notificationsApi.markAsRead(notificationId);
-      setNotifications(prev =>
-        prev.map(notification =>
-          notification.id === notificationId
-            ? { ...notification, status: 'READ' as const }
-            : notification
-        )
-      );
+      await markAsRead({ notificationId });
       onMarkAsRead?.(notificationId);
     } catch (err) {
       console.error('Error marking notification as read:', err);
@@ -67,10 +46,7 @@ export const NotificationPanel = ({
 
   const handleMarkAllAsRead = async () => {
     try {
-      await notificationsApi.markAllAsRead(userId);
-      setNotifications(prev =>
-        prev.map(notification => ({ ...notification, status: 'READ' as const }))
-      );
+      await markAllAsRead({ userId });
       onMarkAllAsRead?.();
     } catch (err) {
       console.error('Error marking all notifications as read:', err);
@@ -79,10 +55,7 @@ export const NotificationPanel = ({
 
   const handleDelete = async (notificationId: string) => {
     try {
-      await notificationsApi.deleteNotification(notificationId);
-      setNotifications(prev =>
-        prev.filter(notification => notification.id !== notificationId)
-      );
+      await deleteNotification({ notificationId });
       onRefresh?.();
     } catch (err) {
       console.error('Error deleting notification:', err);
@@ -135,7 +108,9 @@ export const NotificationPanel = ({
 
           {error && !isLoading && (
             <div className="flex items-center justify-center p-8">
-              <div className="text-sm text-red-600">{error}</div>
+              <div className="text-sm text-red-600">
+                {error instanceof Error ? error.message : 'Erro ao carregar notificações'}
+              </div>
             </div>
           )}
 
