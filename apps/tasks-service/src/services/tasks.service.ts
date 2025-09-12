@@ -277,11 +277,21 @@ export class TasksService {
       );
     }
 
+    const updatedTask = await this.taskRepository.findOne({
+      where: { id },
+      relations: ['assignments'],
+    });
+
+    const currentAssignedUserIds =
+      updatedTask?.assignments?.map((assignment) => assignment.userId) || [];
+
     this.eventService.publishTaskEvent({
       eventType: 'task.updated',
       taskId: id,
       userId,
       data: {
+        title: updatedTask?.title,
+        assignedUserIds: currentAssignedUserIds,
         updatedFields,
         previousValues,
         updatedAt: new Date(),
@@ -292,9 +302,13 @@ export class TasksService {
     return this.findOne(id);
   }
 
-  async remove(id: string, userId: string): Promise<void> {
-    const task = await this.taskRepository.findOne({ where: { id } });
-
+  async remove(
+    id: string,
+    userId: string,
+  ): Promise<{ message: string; id: string }> {
+    const task = await this.taskRepository.findOne({
+      where: { id },
+    });
     if (!task) {
       throw new NotFoundException(`Task with ID ${id} not found`);
     }
@@ -303,7 +317,15 @@ export class TasksService {
       throw new ForbiddenException('You can only delete tasks you created');
     }
 
-    await this.taskRepository.remove(task);
+    try {
+      await this.taskRepository.delete(id);
+
+      console.log(`Task ${id} deleted successfully`);
+      return { message: 'Task deleted successfully', id };
+    } catch (error) {
+      console.error('Error removing task:', error);
+      throw new Error(`Failed to remove task: ${error.message}`);
+    }
   }
 
   async addComment(

@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { FiSettings } from "react-icons/fi";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 const loginSchema = z.object({
   usernameOrEmail: z.string().min(1, "Usuário é obrigatório"),
@@ -34,7 +34,7 @@ export function LoginView() {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = async (data: LoginForm) => {
+  const onSubmit = useCallback(async (data: LoginForm) => {
     setLoading(true);
     try {
       const result = await login(data);
@@ -48,7 +48,7 @@ export function LoginView() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [login, setUser, navigate]);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center p-12 sm:px-6 lg:px-8 items-center">

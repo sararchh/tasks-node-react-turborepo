@@ -13,6 +13,8 @@ import {
   useDeleteTask,
 } from "../hooks/useTasks";
 import { Task, TaskQueryDto, TaskStatus } from "../types/task.types";
+import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { toast } from "react-toastify";
 
 interface TasksMainProps {
   user: {
@@ -22,6 +24,7 @@ interface TasksMainProps {
 }
 
 export const TasksMain: React.FC<TasksMainProps> = ({ user }) => {
+  const { user: authUser } = useAuth();
   const [filters, setFilters] = useState<TaskQueryDto>({});
   const [debouncedFilters, setDebouncedFilters] = useState<TaskQueryDto>({});
   const [showTaskForm, setShowTaskForm] = useState(false);
@@ -48,7 +51,7 @@ export const TasksMain: React.FC<TasksMainProps> = ({ user }) => {
   });
 
   const tasks = useMemo(() => tasksData?.tasks || [], [tasksData?.tasks]);
-  const total = tasksData?.total || 0;
+  const total = useMemo(() => tasksData?.total || 0, [tasksData?.total]);
 
   const { createTask, isLoading: createLoading } = useCreateTask();
   const { updateTask, isLoading: updateLoading } = useUpdateTask();
@@ -84,6 +87,20 @@ export const TasksMain: React.FC<TasksMainProps> = ({ user }) => {
 
   const handleDeleteTask = useCallback(
     (taskId: string) => {
+      const task = tasks.find(t => t.id === taskId);
+
+      if (!task) return;
+
+      if (!authUser?.id) {
+        toast.error("Erro: usuário não identificado");
+        return;
+      }
+
+      if (task.createdBy !== authUser.id) {
+        toast.error("Você só pode excluir tarefas que você criou");
+        return;
+      }
+
       if (window.confirm("Tem certeza que deseja excluir esta tarefa?")) {
         deleteTask(taskId, {
           onSuccess: () => {
@@ -92,7 +109,7 @@ export const TasksMain: React.FC<TasksMainProps> = ({ user }) => {
         });
       }
     },
-    [deleteTask],
+    [deleteTask, tasks, authUser?.id],
   );
 
   const handleEditTask = useCallback((task: Task) => {
@@ -115,6 +132,11 @@ export const TasksMain: React.FC<TasksMainProps> = ({ user }) => {
     [updateTask],
   );
 
+  const tasksText = useMemo(() => {
+    if (total === 0) return "Nenhuma tarefa encontrada";
+    return `${total} tarefa${total !== 1 ? "s" : ""} encontrada${total !== 1 ? "s" : ""}`;
+  }, [total]);
+
   return (
     <main className="flex-1 h-full">
       <div className=" sm:px-6 !m-4">
@@ -124,9 +146,7 @@ export const TasksMain: React.FC<TasksMainProps> = ({ user }) => {
               Gerenciamento de Tarefas
             </h2>
             <p className="text-gray-600 mt-1">
-              {total > 0
-                ? `${total} tarefa${total !== 1 ? "s" : ""} encontrada${total !== 1 ? "s" : ""}`
-                : "Nenhuma tarefa encontrada"}
+              {tasksText}
             </p>
           </div>
 

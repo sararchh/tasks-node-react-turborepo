@@ -7,11 +7,11 @@ import { AppService } from './app.service';
 import { AuthController } from './app/auth/auth.controller';
 import { UsersController } from './app/users/users.controller';
 import { TasksController } from './app/tasks/tasks.controller';
+import { NotificationsController } from './app/notifications/notifications.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
-    // Rate limiting
     ThrottlerModule.forRoot({
       throttlers: [
         {
@@ -31,13 +31,11 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         },
       ],
     }),
-    // JWT Module
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET || 'secret',
       signOptions: { expiresIn: '15m' },
     }),
-    // Microservices clients
     ClientsModule.register([
       {
         name: 'AUTH_SERVICE',
@@ -70,6 +68,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     AuthController,
     UsersController,
     TasksController,
+    NotificationsController,
   ],
   providers: [
     AppService,

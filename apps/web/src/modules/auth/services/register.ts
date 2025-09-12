@@ -1,6 +1,6 @@
 import { ApiService } from '@/shared/core';
 import { api } from '@/shared/infra';
-import { RegisterRequest, AuthResponse } from '@igame/types';
+import { RegisterRequest, AuthResponse } from '../types';
 
 export type RegisterServiceRequest = RegisterRequest;
 

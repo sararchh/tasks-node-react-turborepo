@@ -17,7 +17,6 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
-import { firstValueFrom } from 'rxjs';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
@@ -59,10 +58,8 @@ export class AuthController {
   })
   @ApiResponse({ status: 409, description: 'User already exists' })
   @HttpCode(HttpStatus.CREATED)
-  async register(@Body() registerDto: RegisterDto) {
-    return await firstValueFrom(
-      this.authClient.send('auth.register', registerDto),
-    );
+  register(@Body() registerDto: RegisterDto) {
+    return this.authClient.send('auth.register', registerDto);
   }
 
   @Post('login')
@@ -93,8 +90,8 @@ export class AuthController {
   })
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
   @HttpCode(HttpStatus.OK)
-  async login(@Body() loginDto: LoginDto) {
-    return await firstValueFrom(this.authClient.send('auth.login', loginDto));
+  login(@Body() loginDto: LoginDto) {
+    return this.authClient.send('auth.login', loginDto);
   }
 
   @Post('refresh')
@@ -125,10 +122,8 @@ export class AuthController {
   })
   @ApiResponse({ status: 401, description: 'Invalid refresh token' })
   @HttpCode(HttpStatus.OK)
-  async refresh(@Body() refreshTokenDto: RefreshTokenDto) {
-    return await firstValueFrom(
-      this.authClient.send('auth.refresh', refreshTokenDto),
-    );
+  refresh(@Body() refreshTokenDto: RefreshTokenDto) {
+    return this.authClient.send('auth.refresh', refreshTokenDto);
   }
 
   @Get('profile')
@@ -149,9 +144,7 @@ export class AuthController {
     },
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  async getProfile(@Request() req) {
-    return await firstValueFrom(
-      this.authClient.send('auth.validate', { userId: req.user.sub }),
-    );
+  getProfile(@Request() req) {
+    return this.authClient.send('auth.validate', { userId: req.user.sub });
   }
 }

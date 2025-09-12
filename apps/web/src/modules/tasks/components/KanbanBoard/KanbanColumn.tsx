@@ -71,7 +71,7 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
             </>
           )}
 
-          {tasks.length === 0 && (
+          {tasks.length === 0 && !isFetching && (
             <div className="flex flex-col items-center justify-center py-12 text-gray-500">
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3">
                 <svg

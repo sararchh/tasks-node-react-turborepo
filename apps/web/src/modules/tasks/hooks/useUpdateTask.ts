@@ -11,7 +11,6 @@ export function useUpdateTask() {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
       queryClient.invalidateQueries({ queryKey: ['task', variables.id] });
-      toast.success('Tarefa atualizada com sucesso!');
     },
     onError: (error: any) => {
       const errorMessage = error?.response?.data?.message || 'Erro ao atualizar tarefa';
