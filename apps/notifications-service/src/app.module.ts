@@ -18,7 +18,7 @@ import { NotificationsGateway } from './gateways/notifications.gateway';
       password: process.env.DB_PASSWORD || 'password',
       database: process.env.DB_NAME || 'challenge_db',
       entities: [Notification],
-      synchronize: process.env.NODE_ENV !== 'production',
+      synchronize: false,
       logging: process.env.NODE_ENV === 'development',
     }),
     TypeOrmModule.forFeature([Notification]),

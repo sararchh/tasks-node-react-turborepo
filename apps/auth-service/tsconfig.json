@@ -24,6 +24,6 @@
     "skipDefaultLibCheck": true,
     "typeRoots": ["./node_modules/@types", "./src/types"]
   },
-  "include": ["src/**/*", "src/types/**/*"],
+  "include": ["src/**/*", "src/types/**/*", "migrations/**/*"],
   "exclude": ["node_modules", "dist"]
 }

@@ -13,6 +13,12 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "types:check": "turbo run types:check",
-    "clean": "turbo run clean"
+    "clean": "turbo run clean",
+    "migration:run:all": "yarn workspace auth-service migration:run && yarn workspace tasks-service migration:run && yarn workspace notifications-service migration:run",
+    "migration:revert:all": "yarn workspace notifications-service migration:revert && yarn workspace tasks-service migration:revert && yarn workspace auth-service migration:revert",
+    "migration:show:all": "echo '=== AUTH SERVICE ===' && yarn workspace auth-service migration:show && echo '=== TASKS SERVICE ===' && yarn workspace tasks-service migration:show && echo '=== NOTIFICATIONS SERVICE ===' && yarn workspace notifications-service migration:show",
+    "migration:generate:auth": "yarn workspace auth-service migration:generate",
+    "migration:generate:tasks": "yarn workspace tasks-service migration:generate",
+    "migration:generate:notifications": "yarn workspace notifications-service migration:generate"
   }
 }
