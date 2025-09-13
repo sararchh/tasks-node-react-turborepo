@@ -38,6 +38,7 @@ services:
       - TASKS_SERVICE_PORT=3003
       - NOTIFICATIONS_SERVICE_HOST=notifications-service
       - NOTIFICATIONS_SERVICE_PORT=3004
+      - JWT_SECRET=supersecret
     restart: always
     depends_on:
       db:
@@ -66,8 +67,9 @@ services:
       - DB_PORT=5432
       - DB_USERNAME=postgres
       - DB_PASSWORD=password
-      - DB_DATABASE=challenge_db
+      - DB_NAME=challenge_db
       - JWT_SECRET=supersecret
+      - JWT_REFRESH_SECRET=superrefreshsecret
     restart: always
     depends_on:
       db:
