@@ -1,29 +1,19 @@
-FROM node:18-alpine AS development
+FROM node:20-alpine AS development
 
 WORKDIR /app
 
 COPY package*.json ./
+RUN npm install
 
-RUN yarn install
-
-COPY . .
-
-EXPOSE 3001
-
-CMD ["yarn", "start:dev"]
-
-FROM node:18-alpine AS production
+COPY apps/api-gateway/package*.json ./apps/api-gateway/
+WORKDIR /app/apps/api-gateway
+RUN npm install
 
 WORKDIR /app
-
-COPY package*.json ./
-
-RUN yarn install --production
-
 COPY . .
-
-RUN yarn build
 
 EXPOSE 3001
 
-CMD ["yarn", "start:prod"]
+WORKDIR /app/apps/api-gateway
+CMD ["npm", "run", "dev"]
+

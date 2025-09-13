@@ -1,29 +1,19 @@
-FROM node:18-alpine AS development
+FROM node:20-alpine AS development
 
 WORKDIR /app
 
 COPY package*.json ./
+RUN npm install
 
-RUN yarn install
-
-COPY . .
-
-EXPOSE 3003
-
-CMD ["yarn", "start:dev"]
-
-FROM node:18-alpine AS production
+COPY apps/tasks-service/package*.json ./apps/tasks-service/
+WORKDIR /app/apps/tasks-service
+RUN npm install
 
 WORKDIR /app
-
-COPY package*.json ./
-
-RUN yarn install --production
-
 COPY . .
-
-RUN yarn build
 
 EXPOSE 3003
 
-CMD ["yarn", "start:prod"]
+WORKDIR /app/apps/tasks-service
+CMD ["npm", "run", "dev"]
+

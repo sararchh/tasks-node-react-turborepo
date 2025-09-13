@@ -14,11 +14,11 @@
     "lint": "turbo run lint",
     "types:check": "turbo run types:check",
     "clean": "turbo run clean",
-    "migration:run:all": "yarn workspace auth-service migration:run && yarn workspace tasks-service migration:run && yarn workspace notifications-service migration:run",
-    "migration:revert:all": "yarn workspace notifications-service migration:revert && yarn workspace tasks-service migration:revert && yarn workspace auth-service migration:revert",
-    "migration:show:all": "echo '=== AUTH SERVICE ===' && yarn workspace auth-service migration:show && echo '=== TASKS SERVICE ===' && yarn workspace tasks-service migration:show && echo '=== NOTIFICATIONS SERVICE ===' && yarn workspace notifications-service migration:show",
-    "migration:generate:auth": "yarn workspace auth-service migration:generate",
-    "migration:generate:tasks": "yarn workspace tasks-service migration:generate",
-    "migration:generate:notifications": "yarn workspace notifications-service migration:generate"
+    "migration:run:all": "npm run migration:run -w auth-service && npm run migration:run -w tasks-service && npm run migration:run -w notifications-service",
+    "migration:revert:all": "npm run migration:revert -w notifications-service && npm run migration:revert -w tasks-service && npm run migration:revert -w auth-service",
+    "migration:show:all": "echo '=== AUTH SERVICE ===' && npm run migration:show -w auth-service && echo '=== TASKS SERVICE ===' && npm run migration:show -w tasks-service && echo '=== NOTIFICATIONS SERVICE ===' && npm run migration:show -w notifications-service",
+    "migration:generate:auth": "npm run migration:generate -w auth-service",
+    "migration:generate:tasks": "npm run migration:generate -w tasks-service",
+    "migration:generate:notifications": "npm run migration:generate -w notifications-service"
   }
 }

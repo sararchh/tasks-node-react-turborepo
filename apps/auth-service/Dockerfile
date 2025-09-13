@@ -1,29 +1,20 @@
-FROM node:18-alpine AS development
+FROM node:20-alpine AS development
 
 WORKDIR /app
 
 COPY package*.json ./
+RUN npm install
 
-RUN yarn install
-
-COPY . .
-
-EXPOSE 3002
-
-CMD ["yarn", "start:dev"]
-
-FROM node:18-alpine AS production
+COPY apps/auth-service/package*.json ./apps/auth-service/
+WORKDIR /app/apps/auth-service
+RUN npm install
 
 WORKDIR /app
-
-COPY package*.json ./
-
-RUN yarn install --production
-
 COPY . .
-
-RUN yarn build
 
 EXPOSE 3002
 
-CMD ["yarn", "start:prod"]
+WORKDIR /app/apps/auth-service
+CMD ["npm", "run", "dev"]
+
+

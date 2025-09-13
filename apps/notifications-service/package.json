@@ -1,10 +1,7 @@
 {
   "name": "notifications-service",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
   "private": true,
-  "license": "UNLICENSED",
+  "version": "0.0.1",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -20,14 +17,14 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "typeorm-ts-node-commonjs -d db/datasource.ts",
-    "migration:generate": "yarn build && yarn typeorm -- migration:generate",
-    "migration:run": "yarn typeorm -- migration:run",
-    "migration:revert": "yarn typeorm -- migration:revert",
-    "migration:show": "yarn typeorm -- migration:show"
+    "migration:generate": "npm run build && npm run typeorm -- migration:generate",
+    "migration:run": "npm run typeorm -- migration:run",
+    "migration:revert": "npm run typeorm -- migration:revert",
+    "migration:show": "npm run typeorm -- migration:show"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
-    "@nestjs/config": "^3.2.3",
+    "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^11.0.1",
     "@nestjs/microservices": "^11.1.6",
     "@nestjs/platform-express": "^11.0.1",
