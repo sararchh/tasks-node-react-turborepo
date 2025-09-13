@@ -10,7 +10,8 @@ async function bootstrap() {
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.TCP,
     options: {
-      host: '127.0.0.1',
+      host: '0.0.0.0',
+      // host: '127.0.0.1',
       port: port,
     },
   });
@@ -18,7 +19,7 @@ async function bootstrap() {
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {
-      urls: ['amqp://admin:admin@localhost:5672'],
+      urls: [process.env.RABBITMQ_URL || 'amqp://admin:admin@localhost:5672'],
       queue: 'task_events',
       queueOptions: {
         durable: true,
@@ -35,7 +36,7 @@ async function bootstrap() {
 
   await app.listen(port);
 
-  console.log(`🚀 notifications-service TCP is running on: 127.0.0.1:${port}`);
+  console.log(`🚀 notifications-service TCP is running on: 0.0.0.0:${port}`);
   console.log(
     `🔌 notifications-service WebSocket is running on: ws://localhost:${port}/notifications`,
   );

@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 3004
 
 WORKDIR /app/apps/notifications-service
-CMD ["npm", "run", "dev"]
+CMD ["sh", "-c", "npm run migration:run && npm run dev"]

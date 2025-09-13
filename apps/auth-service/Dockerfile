@@ -15,6 +15,6 @@ COPY . .
 EXPOSE 3002
 
 WORKDIR /app/apps/auth-service
-CMD ["npm", "run", "dev"]
+CMD ["sh", "-c", "npm run migration:run && npm run dev"]
 
 

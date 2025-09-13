@@ -15,5 +15,5 @@ COPY . .
 EXPOSE 3003
 
 WORKDIR /app/apps/tasks-service
-CMD ["npm", "run", "dev"]
+CMD ["sh", "-c", "npm run migration:run && npm run dev"]
 

@@ -9,7 +9,8 @@ async function bootstrap() {
     {
       transport: Transport.TCP,
       options: {
-        host: '127.0.0.1',
+        host: '0.0.0.0',
+        // host: '127.0.0.1',
         port: port,
       },
     },
@@ -17,6 +18,6 @@ async function bootstrap() {
 
   await app.listen();
 
-  console.log(`🚀 auth-service TCP is running on: 127.0.0.1:${port}`);
+  console.log(`🚀 auth-service TCP is running on: 0.0.0.0:${port}`);
 }
 bootstrap();
