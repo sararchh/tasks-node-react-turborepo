@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { FiUserPlus } from "react-icons/fi";
 import { useState, useCallback } from "react";
 import PATHS from "@/routes/paths";
+import { useAuth } from "../../hooks/useAuth";
 
 const registerSchema = z.object({
   email: z.string().email("Email inválido"),
@@ -28,6 +29,8 @@ export function RegisterView() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
+  const { setUser } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -36,18 +39,26 @@ export function RegisterView() {
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = useCallback(async (data: RegisterForm) => {
-    setLoading(true);
-    try {
-      await registerUser(data);
-      toast.success("Cadastro realizado com sucesso! Bem-vindo!");
-      void navigate(PATHS.dashboard.index);
-    } catch {
-      toast.error("Falha no cadastro. Tente novamente.");
-    } finally {
-      setLoading(false);
-    }
-  }, [registerUser, navigate]);
+  const onSubmit = useCallback(
+    async (data: RegisterForm) => {
+      setLoading(true);
+      try {
+        const result = await registerUser(data);
+        if (result) {
+          setUser(result.user);
+          toast.success("Cadastro realizado com sucesso! Bem-vindo!");
+          void navigate(PATHS.dashboard.index);
+        }
+
+        void navigate(PATHS.dashboard.index);
+      } catch {
+        toast.error("Falha no cadastro. Tente novamente.");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [registerUser, navigate],
+  );
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center p-12 sm:px-6 lg:px-8 items-center">
