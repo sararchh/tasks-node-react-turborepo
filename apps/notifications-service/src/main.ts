@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const port = Number(process.env.PORT) || 3004;
+  const tcpPort = Number(process.env.TCP_PORT) || 3014; // Different port for TCP
 
   const app = await NestFactory.create(AppModule);
 
@@ -12,7 +13,7 @@ async function bootstrap() {
     options: {
       host: '0.0.0.0',
       // host: '127.0.0.1',
-      port: port,
+      port: tcpPort,
     },
   });
 
@@ -36,7 +37,8 @@ async function bootstrap() {
 
   await app.listen(port);
 
-  console.log(`🚀 notifications-service TCP is running on: 0.0.0.0:${port}`);
+  console.log(`🚀 notifications-service HTTP is running on: 0.0.0.0:${port}`);
+  console.log(`🚀 notifications-service TCP is running on: 0.0.0.0:${tcpPort}`);
   console.log(
     `🔌 notifications-service WebSocket is running on: ws://localhost:${port}/notifications`,
   );

@@ -37,7 +37,7 @@ services:
       - TASKS_SERVICE_HOST=tasks-service
       - TASKS_SERVICE_PORT=3003
       - NOTIFICATIONS_SERVICE_HOST=notifications-service
-      - NOTIFICATIONS_SERVICE_PORT=3004
+      - NOTIFICATIONS_SERVICE_PORT=3014
       - JWT_SECRET=supersecret
     restart: always
     depends_on:
@@ -118,12 +118,14 @@ services:
       target: development
     ports:
       - '3004:3004'
+      - '3014:3014'
     volumes:
       - .:/app
       - /app/node_modules
     environment:
       - NODE_ENV=development
       - PORT=3004
+      - TCP_PORT=3014
       - DB_HOST=db
       - DB_PORT=5432
       - DB_USERNAME=postgres
