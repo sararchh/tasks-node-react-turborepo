@@ -67,7 +67,7 @@ A aplicação segue uma arquitetura de **microserviços** com os seguintes compo
 
 1. **Clone o repositório:**
    ```bash
-   git clone <repository-url>
+   git clone [<repository-url>](https://github.com/sararchh/tasks-node-react-turborepo.git)
    cd igame
    ```
 
