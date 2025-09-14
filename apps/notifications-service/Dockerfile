@@ -1,29 +1,18 @@
-FROM node:18-alpine AS development
+FROM node:20-alpine AS development
 
 WORKDIR /app
 
 COPY package*.json ./
+RUN npm install
 
-RUN yarn install
-
-COPY . .
-
-EXPOSE 3004
-
-CMD ["yarn", "start:dev"]
-
-FROM node:18-alpine AS production
+COPY apps/notifications-service/package*.json ./apps/notifications-service/
+WORKDIR /app/apps/notifications-service
+RUN npm install
 
 WORKDIR /app
-
-COPY package*.json ./
-
-RUN yarn install --production
-
 COPY . .
-
-RUN yarn build
 
 EXPOSE 3004
 
-CMD ["yarn", "start:prod"]
+WORKDIR /app/apps/notifications-service
+CMD ["sh", "-c", "npm run migration:run && npm run dev"]

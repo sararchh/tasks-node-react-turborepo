@@ -41,24 +41,24 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         name: 'AUTH_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: '127.0.0.1',
-          port: 3002,
+          host: process.env.AUTH_SERVICE_HOST || '127.0.0.1',
+          port: parseInt(process.env.AUTH_SERVICE_PORT) || 3002,
         },
       },
       {
         name: 'TASKS_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: '127.0.0.1',
-          port: 3003,
+          host: process.env.TASKS_SERVICE_HOST || '127.0.0.1',
+          port: parseInt(process.env.TASKS_SERVICE_PORT) || 3003,
         },
       },
       {
         name: 'NOTIFICATIONS_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: '127.0.0.1',
-          port: 3004,
+          host: process.env.NOTIFICATIONS_SERVICE_HOST || '127.0.0.1',
+          port: parseInt(process.env.NOTIFICATIONS_SERVICE_PORT) || 3004,
         },
       },
     ]),

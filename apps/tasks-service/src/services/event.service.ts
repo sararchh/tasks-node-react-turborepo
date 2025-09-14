@@ -25,7 +25,7 @@ export class EventService {
     this.client = ClientProxyFactory.create({
       transport: Transport.RMQ,
       options: {
-        urls: ['amqp://admin:admin@localhost:5672'],
+        urls: [process.env.RABBITMQ_URL || 'amqp://admin:admin@localhost:5672'],
         queue: 'task_events',
         queueOptions: {
           durable: true,

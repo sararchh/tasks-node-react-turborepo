@@ -47,9 +47,17 @@ export const useNotificationWebSocket = ({
 
     console.log('🔌 Iniciando conexão WebSocket para usuário:', userId);
 
+    const token = localStorage.getItem('accessToken');
+
     const socket = io(`${import.meta.env.VITE_NOTIFICATIONS_SERVICE_URL || 'http://localhost:3004'}/notifications`, {
       transports: ['websocket'],
       upgrade: false,
+      auth: {
+        token: token
+      },
+      extraHeaders: {
+        Authorization: `Bearer ${token}`
+      }
     });
 
     socketRef.current = socket;

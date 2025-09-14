@@ -1,29 +1,20 @@
-FROM node:18-alpine AS development
+FROM node:20-bullseye AS development
 
 WORKDIR /app
 
 COPY package*.json ./
+RUN npm install
 
-RUN yarn install
-
-COPY . .
-
-EXPOSE 3000
-
-CMD ["yarn", "dev", "--host", "0.0.0.0"]
-
-FROM node:18-alpine AS production
+COPY apps/web/package*.json ./apps/web/
+WORKDIR /app/apps/web
+RUN npm install
 
 WORKDIR /app
-
-COPY package*.json ./
-
-RUN yarn install --production
-
 COPY . .
-
-RUN yarn build
 
 EXPOSE 3000
 
-CMD ["yarn", "preview", "--host", "0.0.0.0"]
+WORKDIR /app/apps/web
+CMD ["npm", "run", "dev"]
+
+

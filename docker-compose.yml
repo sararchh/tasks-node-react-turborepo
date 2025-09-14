@@ -12,9 +12,9 @@ services:
       - '3000:3000'
     environment:
       - NODE_ENV=development
+    restart: always
     networks:
       - challenge-network
-    command: npm run dev -- --host 0.0.0.0
 
   # API Gateway
   api-gateway:
@@ -27,17 +27,24 @@ services:
       - '3001:3001'
     volumes:
       - .:/app
-      - ./packages:/app/packages
       - /app/node_modules
-      - /app/apps/api-gateway/node_modules
     environment:
       - NODE_ENV=development
       - PORT=3001
+      - RABBITMQ_URL=amqp://admin:admin@rabbitmq:5672
+      - AUTH_SERVICE_HOST=auth-service
+      - AUTH_SERVICE_PORT=3002
+      - TASKS_SERVICE_HOST=tasks-service
+      - TASKS_SERVICE_PORT=3003
+      - NOTIFICATIONS_SERVICE_HOST=notifications-service
+      - NOTIFICATIONS_SERVICE_PORT=3014
+      - JWT_SECRET=supersecret
+    restart: always
     depends_on:
       db:
         condition: service_started
       rabbitmq:
-        condition: service_started
+        condition: service_healthy
     networks:
       - challenge-network
 
@@ -52,9 +59,7 @@ services:
       - '3002:3002'
     volumes:
       - .:/app
-      - ./packages:/app/packages
       - /app/node_modules
-      - /app/apps/auth-service/node_modules
     environment:
       - NODE_ENV=development
       - PORT=3002
@@ -62,13 +67,15 @@ services:
       - DB_PORT=5432
       - DB_USERNAME=postgres
       - DB_PASSWORD=password
-      - DB_DATABASE=challenge_db
+      - DB_NAME=challenge_db
       - JWT_SECRET=supersecret
+      - JWT_REFRESH_SECRET=superrefreshsecret
+    restart: always
     depends_on:
       db:
         condition: service_started
       rabbitmq:
-        condition: service_started
+        condition: service_healthy
     networks:
       - challenge-network
 
@@ -83,17 +90,22 @@ services:
       - '3003:3003'
     volumes:
       - .:/app
-      - ./packages:/app/packages
       - /app/node_modules
-      - /app/apps/tasks-service/node_modules
     environment:
       - NODE_ENV=development
       - PORT=3003
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=password
+      - DB_NAME=challenge_db
+      - RABBITMQ_URL=amqp://admin:admin@rabbitmq:5672
+    restart: always
     depends_on:
       db:
         condition: service_started
       rabbitmq:
-        condition: service_started
+        condition: service_healthy
     networks:
       - challenge-network
 
@@ -106,19 +118,26 @@ services:
       target: development
     ports:
       - '3004:3004'
+      - '3014:3014'
     volumes:
       - .:/app
-      - ./packages:/app/packages
       - /app/node_modules
-      - /app/apps/notifications-service/node_modules
     environment:
       - NODE_ENV=development
       - PORT=3004
+      - TCP_PORT=3014
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=password
+      - DB_NAME=challenge_db
+      - RABBITMQ_URL=amqp://admin:admin@rabbitmq:5672
+    restart: always
     depends_on:
       db:
         condition: service_started
       rabbitmq:
-        condition: service_started
+        condition: service_healthy
     networks:
       - challenge-network
 
@@ -154,6 +173,12 @@ services:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: admin
     volumes: ['rabbitmq_data:/var/lib/rabbitmq']
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      timeout: 20s
+      interval: 30s
+      retries: 3
+      start_period: 40s
 
 volumes:
   postgres_data:
