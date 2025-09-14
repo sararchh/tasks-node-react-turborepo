@@ -233,6 +233,40 @@ npm run migration:revert
 - **Problema**: Dificulta o diagnóstico de problemas de conectividade
 - **Status**: 🔄 Pendente
 
+## ⏱️ Tempo de Desenvolvimento
+
+**Total investido**: ~50 horas ao longo de 10 dias (média de 5h/dia)
+
+### Breakdown por Módulo
+
+| Módulo/Funcionalidade | Tempo Estimado | Descrição |
+|----------------------|----------------|-----------|
+| **Setup Inicial** | 4h | Configuração do monorepo, Turborepo, estrutura base |
+| **Auth Service** | 8h | Implementação completa do microserviço de autenticação |
+| **Tasks Service** | 6h | Microserviço de tarefas com RabbitMQ |
+| **Notifications Service** | 7h | Serviço híbrido (HTTP + TCP + WebSocket + RabbitMQ) |
+| **API Gateway** | 5h | Gateway com roteamento para microserviços |
+| **Frontend (React)** | 10h | Interface completa com TanStack Router e shadcn/ui |
+| **Docker & DevOps** | 6h | Containerização, docker-compose, debugging |
+| **Debugging & Fixes** | 4h | Resolução de problemas de conectividade e portas |
+
+### Principais Desafios Temporais
+
+**🔴 Mais Demorados:**
+- **Configuração Docker**: Conflitos de porta, ordem de inicialização
+- **Comunicação TCP**: Debug de conexões entre microserviços
+- **Notifications Service**: Arquitetura híbrida complexa
+
+**🟢 Mais Rápidos:**
+- **Auth Service**: Padrão bem estabelecido
+- **Frontend Base**: shadcn/ui acelerou o desenvolvimento
+- **Tasks Service**: Implementação direta
+
+### Lições Aprendidas sobre Tempo
+- **Docker Compose**: Investir mais tempo inicial em configuração evita debugging posterior
+- **Microserviços**: Overhead de setup é real, mas paga dividendos na manutenção
+- **TypeScript**: Tempo extra no setup compensa na velocidade de desenvolvimento
+
 ## 🔮 Melhorias Futuras
 
 ### Curto Prazo
